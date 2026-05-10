@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TMF TOUR BD | PRO EDITION</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700&family=Roboto:wght@300;400;700&family=Press+Start+2P&family=Righteous&family=VT323&family=Quicksand:wght@400;600&family=Cinzel:wght@400;700&family=Comic+Neue:wght@400;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <style>
+/* =========================================================
+   DYNAMIC THEME ARCHITECTURE (CSS VARIABLES)
+========================================================= */
+:root { 
+    --font-main: 'Poppins', sans-serif; --font-head: 'Orbitron', sans-serif;
+    --bg-main: #020b18; --bg-card: rgba(10, 25, 47, 0.7); --bg-modal: #020b18; --bg-nav: rgba(10, 25, 47, 0.9); --bg-input: rgba(255, 255, 255, 0.05);
+    --primary: #00d2ff; --accent: #ff0055; --success: #00ff41; --warning: #ffcc00;
+    --text-main: #e6f1ff; --text-muted: #8892b0; --text-inverse: #000000;
+    --radius-app: 12px; --radius-btn: 8px; --radius-modal: 20px; --radius-input: 8px;
+    --border-card: 1px solid rgba(255, 255, 255, 0.1); --border-btn: none; --border-input: 1px solid rgba(255,255,255,0.1);
+    --shadow-card: none; --shadow-btn: 0 4px 10px rgba(0,0,0,0.3);
+    --backdrop: blur(10px); --grad-bg: linear-gradient(-45deg, #020b18, #0b2141, #00d2ff, #020b18);
+}
+
+/* ================= 20 UNLIMITED UNIQUE THEMES ================= */
+body.theme-cyberpunk { --font-main: 'Space Mono', monospace; --font-head: 'Orbitron', sans-serif; --bg-main: #050505; --bg-card: #0a0a0a; --bg-modal: #050505; --bg-nav: #000000; --bg-input: #000000; --primary: #00ffff; --accent: #ff00ff; --success: #00ff00; --warning: #ffff00; --text-main: #ffffff; --text-muted: #aaaaaa; --text-inverse: #000000; --radius-app: 0px; --radius-btn: 0px; --radius-modal: 0px; --radius-input: 0px; --border-card: 1px solid #00ffff; --border-btn: 1px solid #00ffff; --border-input: 1px dotted #ff00ff; --shadow-card: 0 0 10px rgba(0, 255, 255, 0.2); --shadow-btn: 0 0 15px rgba(0, 255, 255, 0.5); --backdrop: none; --grad-bg: none; }
+body.theme-minimal { --font-main: 'Inter', sans-serif; --font-head: 'Inter', sans-serif; --bg-main: #f4f7f6; --bg-card: #ffffff; --bg-modal: #f4f7f6; --bg-nav: #ffffff; --bg-input: #ffffff; --primary: #007bff; --accent: #dc3545; --success: #28a745; --warning: #ffc107; --text-main: #333333; --text-muted: #6c757d; --text-inverse: #ffffff; --radius-app: 24px; --radius-btn: 50px; --radius-modal: 30px; --radius-input: 50px; --border-card: 1px solid #e0e0e0; --border-btn: none; --border-input: 1px solid #cccccc; --shadow-card: 0 10px 30px rgba(0,0,0,0.05); --shadow-btn: 0 5px 15px rgba(0, 123, 255, 0.3); --backdrop: blur(20px); --grad-bg: none; }
+body.theme-glass { --font-main: 'Poppins', sans-serif; --font-head: 'Poppins', sans-serif; --bg-main: transparent; --bg-card: rgba(255, 255, 255, 0.1); --bg-modal: rgba(0, 20, 40, 0.95); --bg-nav: rgba(255, 255, 255, 0.1); --bg-input: rgba(255, 255, 255, 0.15); --primary: #48cae4; --accent: #ffb703; --success: #06d6a0; --warning: #ffd166; --text-main: #ffffff; --text-muted: #caf0f8; --text-inverse: #000000; --radius-app: 16px; --radius-btn: 12px; --radius-modal: 24px; --radius-input: 12px; --border-card: 1px solid rgba(255, 255, 255, 0.3); --border-btn: 1px solid rgba(255,255,255,0.5); --border-input: 1px solid rgba(255, 255, 255, 0.2); --shadow-card: 0 8px 32px 0 rgba(31, 38, 135, 0.37); --shadow-btn: 0 4px 15px rgba(72, 202, 228, 0.4); --backdrop: blur(15px); --grad-bg: linear-gradient(135deg, #03045e, #0077b6, #00b4d8); }
+body.theme-gaming { --font-main: 'Space Mono', monospace; --font-head: 'Bebas Neue', cursive; --bg-main: #1a1a1a; --bg-card: #2b2b2b; --bg-modal: #1a1a1a; --bg-nav: #222222; --bg-input: #333333; --primary: #ff3300; --accent: #ffcc00; --success: #33cc33; --warning: #ff9900; --text-main: #ffffff; --text-muted: #bbbbbb; --text-inverse: #ffffff; --radius-app: 4px; --radius-btn: 4px; --radius-modal: 8px; --radius-input: 4px; --border-card: 2px dashed #555555; --border-btn: 2px solid #ff3300; --border-input: 2px solid #555555; --shadow-card: 4px 4px 0px rgba(0,0,0,1); --shadow-btn: 4px 4px 0px rgba(0,0,0,1); --backdrop: none; --grad-bg: none; }
+body.theme-gold { --font-main: 'Playfair Display', serif; --font-head: 'Cinzel', serif; --bg-main: #0d0d0d; --bg-card: #141414; --bg-modal: #0a0a0a; --bg-nav: #000000; --bg-input: #1f1f1f; --primary: #d4af37; --accent: #b8860b; --success: #556b2f; --warning: #daa520; --text-main: #fdf5e6; --text-muted: #a9a9a9; --text-inverse: #000000; --radius-app: 8px; --radius-btn: 4px; --radius-modal: 12px; --radius-input: 4px; --border-card: 1px solid #d4af37; --border-btn: 1px solid #d4af37; --border-input: 1px solid #b8860b; --shadow-card: inset 0 0 10px rgba(212, 175, 55, 0.1); --shadow-btn: 0 4px 15px rgba(212, 175, 55, 0.3); --backdrop: blur(5px); --grad-bg: radial-gradient(circle, #262626 0%, #000000 100%); }
+body.theme-amoled { --font-main: 'Roboto', sans-serif; --font-head: 'Roboto', sans-serif; --bg-main: #000000; --bg-card: #000000; --bg-modal: #000000; --bg-nav: #000000; --bg-input: #111111; --primary: #ffffff; --accent: #ff0000; --success: #00ff00; --warning: #ffaa00; --text-main: #ffffff; --text-muted: #666666; --text-inverse: #000000; --radius-app: 10px; --radius-btn: 10px; --radius-modal: 15px; --radius-input: 10px; --border-card: 1px solid #333333; --border-btn: 1px solid #ffffff; --border-input: 1px solid #444444; --shadow-card: none; --shadow-btn: none; --backdrop: none; --grad-bg: none; }
+body.theme-gradient-purple { --font-main: 'Quicksand', sans-serif; --font-head: 'Righteous', cursive; --bg-main: #2b0055; --bg-card: rgba(255,255,255,0.1); --bg-modal: #1e003b; --bg-nav: rgba(0,0,0,0.5); --bg-input: rgba(255,255,255,0.2); --primary: #e0b0ff; --accent: #ff4db8; --success: #00fa9a; --warning: #ffdd44; --text-main: #ffffff; --text-muted: #dcdcdc; --text-inverse: #2b0055; --radius-app: 20px; --radius-btn: 30px; --radius-modal: 30px; --radius-input: 20px; --border-card: 1px solid rgba(255,255,255,0.2); --border-btn: none; --border-input: none; --shadow-card: 0 10px 20px rgba(0,0,0,0.3); --shadow-btn: 0 5px 15px rgba(224,176,255,0.4); --backdrop: blur(10px); --grad-bg: linear-gradient(135deg, #120024, #3a0066, #ff00aa); }
+body.theme-hacker { --font-main: 'VT323', monospace; --font-head: 'VT323', monospace; --bg-main: #000000; --bg-card: #001100; --bg-modal: #000000; --bg-nav: #001100; --bg-input: #000000; --primary: #00ff00; --accent: #00cc00; --success: #00ff00; --warning: #ccff00; --text-main: #00ff00; --text-muted: #005500; --text-inverse: #000000; --radius-app: 0; --radius-btn: 0; --radius-modal: 0; --radius-input: 0; --border-card: 1px solid #00ff00; --border-btn: 1px solid #00ff00; --border-input: 1px solid #00aa00; --shadow-card: none; --shadow-btn: none; --backdrop: none; --grad-bg: none; }
+body.theme-anime { --font-main: 'Comic Neue', cursive; --font-head: 'Quicksand', sans-serif; --bg-main: #ffe6f2; --bg-card: #ffffff; --bg-modal: #ffe6f2; --bg-nav: #ffffff; --bg-input: #fff0f5; --primary: #ff66b2; --accent: #ff3333; --success: #33cc80; --warning: #ffb366; --text-main: #4d0026; --text-muted: #b3668a; --text-inverse: #ffffff; --radius-app: 25px; --radius-btn: 25px; --radius-modal: 30px; --radius-input: 20px; --border-card: 2px solid #ffb3d9; --border-btn: none; --border-input: 2px solid #ffcce6; --shadow-card: 0 5px 15px rgba(255, 102, 178, 0.2); --shadow-btn: 0 5px 10px rgba(255, 102, 178, 0.4); --backdrop: blur(5px); --grad-bg: none; }
+body.theme-fire { --font-main: 'Oswald', sans-serif; --font-head: 'Bebas Neue', cursive; --bg-main: #1a0000; --bg-card: #330000; --bg-modal: #1a0000; --bg-nav: #260000; --bg-input: #4d0000; --primary: #ff4500; --accent: #ff0000; --success: #32cd32; --warning: #ffd700; --text-main: #ffffff; --text-muted: #ffb3b3; --text-inverse: #ffffff; --radius-app: 5px; --radius-btn: 5px; --radius-modal: 10px; --radius-input: 5px; --border-card: 1px solid #ff4500; --border-btn: none; --border-input: 1px solid #ff6347; --shadow-card: 0 0 10px rgba(255, 69, 0, 0.4); --shadow-btn: 0 4px 15px rgba(255, 0, 0, 0.5); --backdrop: none; --grad-bg: linear-gradient(to top, #000000, #4d0000, #ff4500); }
+body.theme-ocean { --font-main: 'Inter', sans-serif; --font-head: 'Righteous', cursive; --bg-main: #001f3f; --bg-card: #003366; --bg-modal: #001f3f; --bg-nav: #002b5e; --bg-input: #004080; --primary: #00ffff; --accent: #00bfff; --success: #00fa9a; --warning: #ff8c00; --text-main: #e6ffff; --text-muted: #80bfff; --text-inverse: #001f3f; --radius-app: 15px; --radius-btn: 20px; --radius-modal: 20px; --radius-input: 15px; --border-card: 1px solid #00ffff; --border-btn: none; --border-input: 1px solid #00bfff; --shadow-card: 0 10px 20px rgba(0, 0, 0, 0.5); --shadow-btn: 0 5px 15px rgba(0, 255, 255, 0.4); --backdrop: blur(10px); --grad-bg: linear-gradient(180deg, #001f3f, #00509e); }
+body.theme-retro { --font-main: 'Press Start 2P', cursive; --font-head: 'Press Start 2P', cursive; --bg-main: #2b1055; --bg-card: #4a1c73; --bg-modal: #2b1055; --bg-nav: #1b0a36; --bg-input: #5c2b8c; --primary: #00ffff; --accent: #ff007f; --success: #00ff00; --warning: #ffaa00; --text-main: #ffffff; --text-muted: #cccccc; --text-inverse: #000000; --radius-app: 0px; --radius-btn: 0px; --radius-modal: 0px; --radius-input: 0px; --border-card: 2px solid #00ffff; --border-btn: 2px solid #ff007f; --border-input: 2px solid #ff007f; --shadow-card: 5px 5px 0 #ff007f; --shadow-btn: 4px 4px 0 #00ffff; --backdrop: none; --grad-bg: none; }
+body.theme-luxury { --font-main: 'Playfair Display', serif; --font-head: 'Playfair Display', serif; --bg-main: #0b1021; --bg-card: #151b30; --bg-modal: #0b1021; --bg-nav: #070a14; --bg-input: #1a223d; --primary: #c0c0c0; --accent: #e5e4e2; --success: #8fbc8f; --warning: #daa520; --text-main: #f8f8ff; --text-muted: #a9a9a9; --text-inverse: #000000; --radius-app: 4px; --radius-btn: 2px; --radius-modal: 6px; --radius-input: 2px; --border-card: 1px solid #c0c0c0; --border-btn: 1px solid #e5e4e2; --border-input: 1px solid #a9a9a9; --shadow-card: 0 4px 10px rgba(0,0,0,0.5); --shadow-btn: 0 2px 10px rgba(192,192,192,0.3); --backdrop: blur(5px); --grad-bg: none; }
+body.theme-pastel { --font-main: 'Quicksand', sans-serif; --font-head: 'Quicksand', sans-serif; --bg-main: #fdf6e3; --bg-card: #ffffff; --bg-modal: #fdf6e3; --bg-nav: #ffffff; --bg-input: #f4ecd8; --primary: #84b6f4; --accent: #fdcae1; --success: #b0e57c; --warning: #fdfd96; --text-main: #555555; --text-muted: #999999; --text-inverse: #ffffff; --radius-app: 20px; --radius-btn: 20px; --radius-modal: 25px; --radius-input: 15px; --border-card: 2px solid #84b6f4; --border-btn: none; --border-input: 2px solid #fdcae1; --shadow-card: 0 8px 20px rgba(0,0,0,0.05); --shadow-btn: 0 5px 15px rgba(132, 182, 244, 0.4); --backdrop: blur(10px); --grad-bg: none; }
+body.theme-material { --font-main: 'Roboto', sans-serif; --font-head: 'Roboto', sans-serif; --bg-main: #fafafa; --bg-card: #ffffff; --bg-modal: #fafafa; --bg-nav: #ffffff; --bg-input: #f0f0f0; --primary: #6200ea; --accent: #03dac6; --success: #4caf50; --warning: #ff9800; --text-main: #000000; --text-muted: #666666; --text-inverse: #ffffff; --radius-app: 8px; --radius-btn: 4px; --radius-modal: 12px; --radius-input: 4px; --border-card: none; --border-btn: none; --border-input: none; --shadow-card: 0 2px 5px rgba(0,0,0,0.1); --shadow-btn: 0 2px 5px rgba(98, 0, 234, 0.4); --backdrop: none; --grad-bg: none; }
+body.theme-space { --font-main: 'Orbitron', sans-serif; --font-head: 'Orbitron', sans-serif; --bg-main: #010a15; --bg-card: rgba(2, 18, 36, 0.8); --bg-modal: #010a15; --bg-nav: rgba(0,0,0,0.8); --bg-input: rgba(255,255,255,0.05); --primary: #8a2be2; --accent: #ff1493; --success: #32cd32; --warning: #ff8c00; --text-main: #ffffff; --text-muted: #9370db; --text-inverse: #ffffff; --radius-app: 12px; --radius-btn: 25px; --radius-modal: 15px; --radius-input: 10px; --border-card: 1px solid rgba(138, 43, 226, 0.3); --border-btn: none; --border-input: 1px solid rgba(255, 20, 147, 0.3); --shadow-card: 0 0 15px rgba(138, 43, 226, 0.2); --shadow-btn: 0 0 15px rgba(138, 43, 226, 0.6); --backdrop: blur(10px); --grad-bg: radial-gradient(circle at center, #010a15, #000000); }
+body.theme-matrix { --font-main: 'VT323', monospace; --font-head: 'VT323', monospace; --bg-main: #000500; --bg-card: #001500; --bg-modal: #000500; --bg-nav: #000a00; --bg-input: #002200; --primary: #33ff33; --accent: #11aa11; --success: #00ff00; --warning: #aaff00; --text-main: #33ff33; --text-muted: #117711; --text-inverse: #000000; --radius-app: 0px; --radius-btn: 0px; --radius-modal: 0px; --radius-input: 0px; --border-card: 1px dashed #33ff33; --border-btn: 1px solid #33ff33; --border-input: 1px dotted #11aa11; --shadow-card: 0 0 8px rgba(51, 255, 51, 0.2); --shadow-btn: 0 0 15px rgba(51, 255, 51, 0.4); --backdrop: none; --grad-bg: none; }
+body.theme-sunset { --font-main: 'Poppins', sans-serif; --font-head: 'Righteous', cursive; --bg-main: #2a0800; --bg-card: #4d1a00; --bg-modal: #2a0800; --bg-nav: #1a0500; --bg-input: #662200; --primary: #ff7f50; --accent: #ff4500; --success: #9acd32; --warning: #ffd700; --text-main: #ffeecc; --text-muted: #ffcc99; --text-inverse: #000000; --radius-app: 15px; --radius-btn: 30px; --radius-modal: 20px; --radius-input: 15px; --border-card: 1px solid #ff7f50; --border-btn: none; --border-input: 1px solid #ff4500; --shadow-card: 0 5px 15px rgba(255, 69, 0, 0.3); --shadow-btn: 0 5px 20px rgba(255, 127, 80, 0.5); --backdrop: blur(5px); --grad-bg: linear-gradient(135deg, #2a0800, #800000, #ff4500); }
+body.theme-ice { --font-main: 'Inter', sans-serif; --font-head: 'Oswald', sans-serif; --bg-main: #e0f7fa; --bg-card: #ffffff; --bg-modal: #e0f7fa; --bg-nav: #ffffff; --bg-input: #b2ebf2; --primary: #00bcd4; --accent: #009688; --success: #4caf50; --warning: #ffc107; --text-main: #004d40; --text-muted: #00796b; --text-inverse: #ffffff; --radius-app: 20px; --radius-btn: 10px; --radius-modal: 25px; --radius-input: 10px; --border-card: 1px solid #80deea; --border-btn: none; --border-input: 1px solid #4dd0e1; --shadow-card: 0 10px 20px rgba(0, 188, 212, 0.1); --shadow-btn: 0 5px 15px rgba(0, 188, 212, 0.3); --backdrop: blur(10px); --grad-bg: none; }
+body.theme-orange-dark { --font-main: 'Roboto', sans-serif; --font-head: 'Bebas Neue', cursive; --bg-main: #121212; --bg-card: #1e1e1e; --bg-modal: #121212; --bg-nav: #000000; --bg-input: #2c2c2c; --primary: #ff5722; --accent: #ff9800; --success: #4caf50; --warning: #ffc107; --text-main: #ffffff; --text-muted: #aaaaaa; --text-inverse: #ffffff; --radius-app: 8px; --radius-btn: 4px; --radius-modal: 12px; --radius-input: 4px; --border-card: 1px solid #333; --border-btn: none; --border-input: 1px solid #444; --shadow-card: 0 4px 6px rgba(0,0,0,0.5); --shadow-btn: 0 4px 10px rgba(255, 87, 34, 0.4); --backdrop: none; --grad-bg: none; }
+
+/* =========================================================
+   GLOBAL STYLES (MAPPED TO CSS VARIABLES)
+========================================================= */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg-main); color: var(--text-main); font-family: var(--font-main); height: 100vh; overflow: hidden; transition: background 0.4s, color 0.4s; }
+
+.live-bg { position: fixed; inset: 0; z-index: -1; background: var(--grad-bg); background-size: 400% 400%; animation: gradientMove 12s ease infinite; transition: 0.4s; }
+@keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+#app-main { display: none; width: 100%; max-width: 450px; height: 100vh; margin: auto; position: relative; flex-direction: column; }
+.header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-nav); backdrop-filter: var(--backdrop); border-bottom: 1px solid var(--primary); z-index: 10; transition: 0.4s;}
+.balance-card { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--primary); padding: 5px 15px; border-radius: 50px; color: var(--primary); font-family: var(--font-main); font-size: 0.85rem; display: flex; gap: 8px; align-items: center; font-weight: 600;}
+
+.content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 90px; }
+
+/* ==== SLIDER WRAPPER STYLES ==== */
+#slider-wrapper { width: 100%; height: 160px; border-radius: var(--radius-app); margin-bottom: 15px; overflow: hidden; position: relative; box-shadow: var(--shadow-card); border: 1px solid rgba(255,255,255,0.1); display: none; }
+#slider-container { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
+.slide-img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+
+.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mode-card { position: relative; height: 135px; border-radius: var(--radius-app); overflow: hidden; border: var(--border-card); background: var(--bg-card); box-shadow: var(--shadow-card); cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+.mode-card:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--primary); }
+.mode-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+.mode-info { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); display: flex; flex-direction: column; justify-content: flex-end; padding: 12px; }
+.mode-info h2 { font-family: var(--font-head); font-size: 0.8rem; font-weight: 600; color: #fff; text-shadow: 0 0 5px #000; }
+.match-count-bubble { position:absolute; top:8px; right:8px; background:var(--accent); color:#fff; border-radius:50%; min-width:24px; height:24px; padding:0 6px; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:bold; z-index:5; box-shadow: 0 0 8px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); }
+
+.bottom-nav { position: absolute; bottom: 0; width: 100%; height: 70px; background: var(--bg-nav); backdrop-filter: var(--backdrop); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); z-index: 10; transition: 0.4s;}
+.nav-item { color: var(--text-muted); text-align: center; font-size: 0.6rem; cursor: pointer; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: var(--font-head);}
+.nav-item.active { color: var(--primary); }
+
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000; display: none; flex-direction: column; opacity: 0; transform: translateY(20px); transition: opacity 0.3s ease, transform 0.3s ease; }
+.modal.active { display: flex; opacity: 1; transform: translateY(0); }
+.modal-bottom { justify-content: flex-end; background: rgba(0,0,0,0.6); }
+.modal-bottom .modal-content-wrap { background: var(--bg-modal); border-top: 2px solid var(--primary); border-top-left-radius: var(--radius-modal); border-top-right-radius: var(--radius-modal); max-height: 80vh; display: flex; flex-direction: column; transform: translateY(100%); transition: 0.3s ease; }
+.modal-bottom.active .modal-content-wrap { transform: translateY(0); }
+
+.modal-header { padding: 18px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: var(--font-head); font-weight: 600; color: var(--primary); background: var(--bg-nav); z-index: 5001; transition: 0.4s;}
+.modal-body { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 40px; background: var(--bg-modal); transition: 0.4s;}
+
+.tmf-input { width: 100%; padding: 12px; background: var(--bg-input); border: var(--border-input); border-radius: var(--radius-input); color: var(--text-main); margin-bottom: 12px; outline: none; font-family: var(--font-main); transition: 0.4s;}
+.tmf-input::placeholder { color: var(--text-muted); }
+.tmf-btn { width: 100%; padding: 14px; border-radius: var(--radius-btn); border: var(--border-btn); box-shadow: var(--shadow-btn); font-weight: 600; cursor: pointer; font-family: var(--font-head); font-size: 0.85rem; margin-bottom: 10px; transition: 0.2s; text-align: center; display: inline-block;}
+.tmf-btn:hover { box-shadow: 0 0 18px var(--primary); }
+.tmf-btn:active { transform: scale(0.98); }
+.tmf-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-blue { background: var(--primary); color: var(--text-inverse); }
+.btn-red { background: var(--accent); color: #fff; }
+
+.pass-wrapper { position: relative; width: 100%; }
+.pass-eye { position: absolute; right: 15px; top: 15px; color: var(--text-muted); cursor: pointer; z-index: 2; }
+.pass-eye:hover { color: var(--primary); }
+
+.chat-user-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: var(--border-card); padding: 12px; border-radius: var(--radius-app); margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
+.chat-user-item:hover { border-color: var(--primary); box-shadow: 0 0 10px rgba(0,210,255,0.2); }
+.chat-room-body { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; background: var(--bg-modal); }
+.chat-msg { max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 0.85rem; line-height: 1.4; word-wrap: break-word;}
+.chat-msg.sent { align-self: flex-end; background: var(--primary); color: var(--text-inverse); border-bottom-right-radius: 2px; }
+.chat-msg.received { align-self: flex-start; background: var(--bg-card); border: var(--border-card); color: var(--text-main); border-bottom-left-radius: 2px; }
+.chat-msg.system { align-self: center; background: rgba(255, 204, 0, 0.1); color: var(--warning); border: 1px dashed var(--warning); text-align: center; max-width: 90%; margin: 10px auto; font-size: 0.75rem; border-radius: 8px;}
+.chat-msg-time { font-size: 0.55rem; opacity: 0.7; margin-top: 5px; text-align: right; }
+.chat-input-area { padding: 15px; background: var(--bg-nav); border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 10px; align-items: center; }
+.chat-input-area input[type="text"] { flex: 1; padding: 12px 15px; border-radius: var(--radius-input); border: var(--border-input); background: var(--bg-input); color: var(--text-main); outline: none; }
+.chat-input-area button { width: 45px; height: 45px; border-radius: 50%; background: var(--primary); border: none; color: var(--text-inverse); display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1.1rem; }
+
+#auth-screen { position: fixed; inset: 0; background: var(--bg-main); z-index: 9999; display: flex; flex-direction: column; padding: 40px; justify-content: center; transition: 0.4s; }
+#permission-block-screen { position: fixed; inset: 0; background: var(--bg-main); z-index: 99999; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px; }
+.bell-icon-large { font-size: 5rem; color: var(--primary); margin-bottom: 20px; animation: iconPulse 2s infinite; }
+
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) scale(0.9); background: var(--bg-nav); border: 1px solid var(--primary); color: var(--text-main); padding: 12px 25px; border-radius: 50px; font-family: var(--font-main); font-weight: 600; font-size: 0.85rem; z-index: 100000; opacity: 0; pointer-events: none; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+.toast.show { opacity: 1; transform: translateX(-50%) scale(1); }
+
+.match-card { background: var(--bg-card); border-radius: var(--radius-app); margin-bottom: 15px; border: var(--border-card); box-shadow: var(--shadow-card); overflow: hidden; display: flex; flex-direction: column; transition: 0.4s;}
+.match-card:hover { box-shadow: 0 0 20px var(--primary); transform: translateY(-2px); }
+.match-card-header { padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); }
+.match-card-body { padding: 15px; }
+.match-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; text-align: center; }
+.stat-box { background: rgba(0,0,0,0.2); padding: 8px; border-radius: var(--radius-app); border: var(--border-card); }
+.stat-title { font-size: 0.6rem; color: var(--text-muted); margin-bottom: 3px; font-family: var(--font-head); }
+.stat-val { font-size: 0.85rem; font-family: var(--font-main); font-weight: 600; color: var(--primary); }
+
+.progress-container { width: 100%; height: 6px; background: rgba(128,128,128,0.3); border-radius: 10px; margin: 10px 0; overflow: hidden;}
+.progress-fill { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.3s; }
+.slots-text { font-size: 0.7rem; color: var(--text-muted); display: flex; justify-content: space-between; }
+.match-actions { display: flex; gap: 10px; margin-top: 10px; }
+
+.tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.1); background: var(--bg-nav); }
+.tab { flex: 1; text-align: center; padding: 12px; font-family: var(--font-head); font-size: 0.8rem; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: 0.2s;}
+.tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); font-weight: 600;}
+
+.badge { padding: 4px 10px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; cursor: pointer; font-family: var(--font-main); transition: 0.2s; }
+.badge:active { transform: scale(0.9); }
+.b-live { background: rgba(0,255,65,0.2); color: var(--success); }
+.b-up { background: rgba(255,204,0,0.2); color: var(--warning); }
+
+.md-top-banner { width: 100%; height: 180px; background-size: cover; background-position: center; position: relative; }
+.md-top-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; }
+.md-title { font-family: var(--font-head); font-size: 1.3rem; color: var(--primary); text-shadow: 0 2px 4px #000; margin-bottom: 5px; }
+.md-subtitle { font-size: 0.75rem; color: #ddd; text-shadow: 0 1px 3px #000; }
+.tmf-countdown-box { border: 1px dashed var(--primary); background: rgba(0,210,255,0.1); padding: 12px; text-align: center; border-radius: var(--radius-app); margin: 15px 0; font-family: var(--font-head); font-size: 0.9rem; color: var(--primary); }
+.md-grid-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+
+.room-box { background: rgba(0,0,0,0.4); padding: 12px; border-radius: var(--radius-app); border: 1px dashed var(--primary); margin-top: 15px; margin-bottom: 15px; transition: 0.4s;}
+.room-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+
+.tx-list { margin-top: 15px; }
+.tx-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg-card); border-radius: var(--radius-app); border: var(--border-card); margin-bottom: 8px; font-size: 0.8rem; border-left: 3px solid #8892b0; transition: 0.4s;}
+.tx-join { border-left-color: var(--accent); }
+.tx-win { border-left-color: var(--success); }
+.tx-dep { border-left-color: var(--primary); }
+
+.leaderboard-item { display: flex; align-items: center; background: rgba(0,0,0,0.3); padding: 10px; border-radius: var(--radius-app); border: var(--border-card); margin-bottom: 8px; }
+.rank-badge { width: 30px; height: 30px; background: rgba(0,210,255,0.1); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-family: var(--font-main); font-weight: 600; margin-right: 15px; }
+
+.refer-box { background: rgba(0,210,255,0.05); border: 1px dashed var(--primary); padding: 15px; border-radius: var(--radius-app); text-align: center; margin-bottom: 20px;}
+.dual-balance { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+.bal-card { background: var(--bg-card); padding: 15px; border-radius: var(--radius-app); border: var(--border-card); text-align: center; }
+
+.telegram-wrapper { position: fixed; bottom: 85px; right: 20px; z-index: 4999; animation: bounceFloat 3s ease-in-out infinite; }
+.telegram-float { width: 55px; height: 55px; background-color: #0088cc; color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 15px rgba(0, 136, 204, 0.5); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+.telegram-float::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 rgba(0, 136, 204, 0.6); animation: pulseGlow 3s infinite; z-index: -1; }
+.telegram-float:hover { box-shadow: 0 4px 20px rgba(0, 136, 204, 0.8); }
+@keyframes bounceFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0.6); } 70% { box-shadow: 0 0 0 15px rgba(0, 136, 204, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 136, 204, 0); } }
+
+.filter-scroll { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); scrollbar-width: none;}
+.filter-scroll::-webkit-scrollbar { display: none; }
+.filter-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid var(--primary); background: rgba(0,210,255,0.05); color: var(--primary); font-size: 0.75rem; font-family: var(--font-main); font-weight: 600; white-space: nowrap; cursor: pointer; transition: 0.2s; }
+.filter-btn.active { background: var(--primary); color: var(--text-inverse); box-shadow: 0 0 10px rgba(0,210,255,0.5); }
+
+.notif-bell { position: relative; cursor: pointer; color: var(--primary); font-size: 1.3rem; margin-left: 15px; transition: transform 0.2s;}
+.notif-badge { position: absolute; top: -5px; right: -5px; background: var(--accent); color: #fff; font-size: 0.6rem; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; border: 2px solid var(--bg-nav);}
+
+.notif-item { background: var(--bg-card); padding: 15px; border-radius: var(--radius-app); margin-bottom: 12px; border-left: 3px solid var(--primary); border: var(--border-card); }
+.status-badge { padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; font-family: var(--font-main);}
+.st-pending { background: rgba(255,204,0,0.2); color: var(--warning); border: 1px solid var(--warning); }
+.st-approved { background: rgba(0,255,65,0.2); color: var(--success); border: 1px solid var(--success); }
+.st-rejected { background: rgba(255,0,85,0.2); color: var(--accent); border: 1px solid var(--accent); }
+
+.rules-box { background: var(--bg-card); padding: 15px; border-radius: var(--radius-app); border: var(--border-card); font-size: 0.8rem; color: var(--text-main); white-space: pre-line; line-height: 1.6; margin-bottom: 15px; }
+.prize-list-ul { list-style: none; padding: 0; }
+.prize-list-ul li { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: var(--radius-app); margin-bottom: 8px; display: flex; justify-content: space-between; font-size: 0.85rem; font-family: var(--font-main); font-weight: 600; color: var(--text-main); }
+.prize-list-ul li span:first-child { color: var(--warning); }
+.prize-list-ul li span:last-child { color: var(--primary); }
+
+.full-screen-modal { position: fixed; inset: 0; background: var(--bg-main); z-index: 999999; display: none; flex-direction: column; overflow-y: auto; transition: 0.4s;}
+.full-screen-modal.active { display: flex; animation: slideUp 0.3s ease; }
+
+.jump-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: var(--bg-nav); border: 2px solid var(--primary); padding: 25px; border-radius: var(--radius-modal); z-index: 9999999; text-align: center; color: var(--text-main); box-shadow: 0 0 25px rgba(0,0,0,0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 85%; max-width: 350px; backdrop-filter: var(--backdrop); }
+.jump-popup.show { transform: translate(-50%, -50%) scale(1); }
+
+/* ==== DEPOSIT UI STYLES ==== */
+.dep-tab-container { display: flex; gap: 8px; margin-bottom: 15px; }
+.dep-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 10px 5px; background: var(--bg-card); border: var(--border-card); border-radius: 8px; cursor: pointer; color: var(--text-main); font-weight: bold; font-size: 0.8rem; position: relative; transition: 0.3s;}
+.dep-tab img { width: 20px; height: 20px; border-radius: 4px; }
+.dep-tab.active.bkash { border-color: #e2136e; background: rgba(226, 19, 110, 0.1); color: #e2136e;}
+.dep-tab.active.nagad { border-color: #f7931e; background: rgba(247, 147, 30, 0.1); color: #f7931e;}
+.dep-tab.active.rocket { border-color: #8c1561; background: rgba(140, 21, 97, 0.1); color: #8c1561;}
+.dep-tab.active::after { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: -6px; right: -6px; font-size: 1.1rem; border-radius:50%; background:var(--bg-modal);}
+
+.dep-box { border-radius: 12px; padding: 15px; color: #fff; transition: 0.4s;}
+.dep-box.bkash { background: #e2136e; }
+.dep-box.nagad { background: #f7931e; }
+.dep-box.rocket { background: #8c1561; }
+
+.dep-box-title { text-align: center; font-weight: bold; margin-bottom: 15px; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 10px; font-family: var(--font-main);}
+
+.dep-input { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.2); margin-bottom: 15px; font-size: 0.9rem; background: rgba(255,255,255,0.1); color: #fff; outline:none; font-family: var(--font-main);}
+.dep-input::placeholder { color: rgba(255,255,255,0.7); }
+.dep-input.amount { margin-bottom: 10px; }
+
+.dep-instruction { font-size: 0.75rem; line-height: 1.6; margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; font-weight: 600; font-family: var(--font-main);}
+.dep-bullet { display: flex; gap: 8px; align-items: flex-start; }
+.dep-bullet i { margin-top: 5px; font-size: 0.6rem; color: #fff;}
+
+.dep-number-box { background: transparent; padding: 0; display: inline-flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1rem; color: #ffeb3b; margin-top: 5px; margin-bottom: 5px;}
+.dep-copy-btn { background: rgba(255,255,255,0.3); border: none; padding: 4px 10px; border-radius: 4px; color: #fff; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; font-weight: bold;}
+
+.dep-verify-btn { width: 100%; padding: 14px; border-radius: 8px; border: none; font-weight: bold; font-size: 1rem; color: #e2136e; cursor: pointer; background: #fff; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 10px;}
+.bkash .dep-verify-btn { color: #e2136e; }
+.nagad .dep-verify-btn { color: #f7931e; }
+.rocket .dep-verify-btn { color: #8c1561; }
+/* =========================== */
+
+.dynamic-instruction-box { background: var(--bg-card); padding: 15px; border-radius: var(--radius-app); font-size: 0.8rem; line-height: 1.6; color: var(--text-main); text-align: left; border-left: 4px solid var(--primary); margin-bottom: 15px;}
+
+.theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+.theme-card { background: var(--bg-card); border: var(--border-card); border-radius: var(--radius-app); padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; box-shadow: var(--shadow-card);}
+.theme-card:hover, .theme-card.active { border-color: var(--primary); box-shadow: 0 0 15px var(--primary); transform: translateY(-3px); }
+.theme-card.active::before { content: 'ACTIVE'; position: absolute; top: 5px; right: -25px; background: var(--success); color: #000; font-size: 0.55rem; font-family: var(--font-head); padding: 3px 25px; transform: rotate(45deg); font-weight: 600; }
+.theme-icon { font-size: 2rem; color: var(--primary); margin-bottom: 10px; transition: 0.3s; }
+.theme-title { font-family: var(--font-head); font-weight: 600; font-size: 0.65rem; color: var(--text-main); margin-bottom: 8px; }
+.theme-desc { font-size: 0.55rem; color: var(--text-muted); }
+
+@keyframes iconPulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); text-shadow: 0 0 10px var(--primary); } 100% { transform: scale(1); } }
+@keyframes iconSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes iconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.anim-pulse { animation: iconPulse 2s infinite; }
+.anim-spin { animation: iconSpin 4s linear infinite; }
+.anim-float { animation: iconFloat 3s ease-in-out infinite; }
+
+.glow-title-all-rules { font-family: var(--font-head); font-size: 1.8rem; color: var(--text-main); text-align: center; text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary); animation: textFlicker 1.5s infinite alternate; margin-bottom: 25px; font-weight: 700; }
+@keyframes textFlicker { 0% { opacity: 0.8; transform: scale(0.98); } 100% { opacity: 1; transform: scale(1); } }
+
+.rule-card-pro { background: var(--bg-card); border: var(--border-card); border-radius: var(--radius-app); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow-card); transition: 0.4s all ease-in-out; position: relative; overflow: hidden; backdrop-filter: var(--backdrop); }
+.rule-card-pro:hover { transform: scale(1.02) translateY(-5px); box-shadow: 0 0 25px var(--primary); border-color: var(--primary); }
+.notice-card { border-color: var(--accent); text-align: center; background: rgba(255, 0, 85, 0.1); }
+.notice-card h2 { color: var(--accent); font-family: var(--font-head); font-weight: 600; font-size: 1.2rem; margin-bottom: 8px;}
+.notice-card p { color: var(--text-main); font-size: 0.85rem; font-weight: 600; }
+.mode-rule-card h2 { color: var(--primary); font-family: var(--font-head); font-weight: 600; font-size: 1.1rem; margin-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 10px;}
+.mode-rule-card p { font-size: 0.85rem; color: var(--text-main); white-space: pre-line; line-height: 1.7; }
+</style>
+</head>
+<body class="theme-minimal">
+
+<div id="force-update-popup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:99999; align-items:center; justify-content:center;">
+    <div style="background:var(--bg-card); padding:25px; border-radius:12px; text-align:center; max-width:300px; width:90%; border:1px solid var(--primary); box-shadow:0 0 20px rgba(0,210,255,0.2);">
+        <h2 style="color:var(--primary); margin-bottom:10px; font-family:var(--font-head);">New Version Released</h2>
+        <p style="font-size:0.85rem; margin-bottom:20px; color:var(--text-main);">Please update to continue using the app.</p>
+        
+        <a href="" id="updateLink" target="_blank" style="display:none;"></a>
+        <button id="update-btn" onclick="goToUpdate()" style="background:var(--primary); color:#000; margin-bottom:10px; width:100%; padding: 12px; border:none; border-radius:8px; font-weight:bold; font-family:var(--font-main);">UPDATE NOW</button>
+        <button onclick="copyUpdateLink()" style="background:rgba(0,210,255,0.1); border:1px solid var(--primary); color:var(--primary); margin-bottom:10px; width:100%; padding: 12px; border-radius:8px; font-weight:bold; font-family:var(--font-main);">COPY LINK</button>
+        <button onclick="exitApp()" style="background:var(--accent); color:#fff; width:100%; padding: 12px; border:none; border-radius:8px; font-weight:bold; font-family:var(--font-main);">EXIT</button>
+    </div>
+</div>
+
+<div class="live-bg"></div>
+<div id="toast-msg" class="toast"></div>
+
+<div id="global-loader" style="display:none; position:fixed; inset:0; background:var(--bg-main); z-index:10000; flex-direction:column; justify-content:center; align-items:center; color:var(--primary); font-family:var(--font-head); font-size:1.2rem; gap:15px;">
+    <i class="fa-solid fa-spinner fa-spin" style="font-size: 3rem; color:var(--primary); animation: iconPulse 1.5s infinite;"></i>
+    <div style="letter-spacing: 2px;">SYNCING DATA...</div>
+</div>
+
+<div class="jump-popup" id="join-success-modal">
+    <i class="fa-solid fa-circle-check" style="font-size: 3rem; color: var(--success); margin-bottom: 10px;"></i>
+    <h2 style="color:var(--success); font-family:var(--font-head); margin-bottom:5px; font-size:1.4rem;">Join Successful</h2>
+    <p style="font-size:0.85rem; margin-bottom:20px; color:var(--text-main);">Please Join The Official Channel</p>
+    <button class="tmf-btn" onclick="openTelegram()" style="background:#0088cc; color:#fff; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px;"><i class="fa-brands fa-telegram" style="font-size:1.2rem;"></i> Join Official Telegram Channel</button>
+    <button class="tmf-btn" onclick="window.open('https://whatsapp.com/channel/0029Vb7Wx5NLtOj66g5t0p24', '_blank')" style="background:#25D366; color:#fff; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:15px;"><i class="fa-brands fa-whatsapp" style="font-size:1.2rem;"></i> Join WhatsApp Channel</button>
+    <button class="tmf-btn" style="background:rgba(128,128,128,0.2); border:1px solid rgba(128,128,128,0.4); color:var(--text-main);" onclick="closeJoinSuccessModal()">Close</button>
+</div>
+
+<div class="jump-popup" id="action-success-popup">
+    <i class="fa-solid fa-circle-check" style="font-size: 3rem; color: var(--success); margin-bottom: 15px;"></i>
+    <h3 style="font-family:var(--font-head); color:var(--success); margin-bottom:10px;">SUCCESS</h3>
+    <p id="action-success-msg" style="font-size:0.85rem; margin-bottom:15px; white-space:pre-line; line-height: 1.5; color:var(--text-main);"></p>
+    <button class="tmf-btn" style="background:var(--success); color:#000;" onclick="closeSuccessPopup()">OK</button>
+</div>
+
+<div id="permission-block-screen">
+    <i class="fa-solid fa-bell bell-icon-large"></i>
+    <h2 style="font-family:var(--font-head); color:var(--text-main); margin-bottom:15px;">PERMISSION REQUIRED</h2>
+    <p style="color:var(--text-muted); margin-bottom:30px; font-size:0.9rem;">App use korte hole notification allow korte hobe</p>
+    <button class="tmf-btn btn-blue" onclick="requestNotificationPermission()">ALLOW & CONTINUE</button>
+    <p style="font-size:0.7rem; color:var(--accent); margin-top:20px; display:none;" id="perm-denied-msg">
+        <i class="fa-solid fa-triangle-exclamation"></i> Permission Blocked! Please enable notifications from your browser site settings.
+    </p>
+</div>
+
+<div id="auth-screen">
+    <h1 style="text-align:center; font-family:var(--font-head); color:var(--primary); margin-bottom:40px; font-size: 2.2rem; letter-spacing: 2px; text-shadow: 0 0 10px var(--primary);">TMF TOUR BD</h1>
+    <div id="login-form">
+        <input type="email" id="l-email" class="tmf-input" placeholder="EMAIL ADDRESS">
+        <div class="pass-wrapper">
+            <input type="password" id="l-pass" class="tmf-input" placeholder="PASSWORD">
+            <i class="fa-solid fa-eye pass-eye" onclick="togglePass('l-pass', this)"></i>
+        </div>
+        <button class="tmf-btn btn-blue" id="login-btn" onclick="login()">LOGIN</button>
+        <div style="display:flex; justify-content:space-between; margin-top:10px;">
+            <p onclick="openFullScreenModal('modal-forgot-pass')" style="font-size:0.75rem; color:var(--warning); cursor:pointer;">Forgot Password?</p>
+            <p onclick="toggleAuth()" style="font-size:0.75rem; color:var(--primary); cursor:pointer; font-weight:bold;">Register New Account</p>
+        </div>
+    </div>
+    <div id="reg-form" style="display:none;">
+        <input type="text" id="r-name" class="tmf-input" placeholder="USERNAME (IGN)">
+        <input type="email" id="r-email" class="tmf-input" placeholder="EMAIL ADDRESS">
+        <div class="pass-wrapper">
+            <input type="password" id="r-pass" class="tmf-input" placeholder="PASSWORD">
+            <i class="fa-solid fa-eye pass-eye" onclick="togglePass('r-pass', this)"></i>
+        </div>
+        <input type="tel" id="r-phone" class="tmf-input" placeholder="MOBILE NUMBER (REQUIRED)">
+        <input type="text" id="r-ref" class="tmf-input" placeholder="Promo Code (Optional)">
+        <button class="tmf-btn btn-blue" id="reg-btn-submit" onclick="register()">CREATE ACCOUNT</button>
+        <p onclick="toggleAuth()" style="text-align:center; font-size:0.75rem; color:var(--primary); cursor:pointer; margin-top:10px; font-weight:bold;">Back to Login</p>
+    </div>
+</div>
+
+<div id="app-main">
+    <header class="header">
+        <div style="font-family:var(--font-head); font-weight:bold; color:var(--primary); font-size: 1.1rem; letter-spacing: 1px;">TMF DASHBOARD</div>
+        <div class="balance-card">
+            <div><i class="fa-solid fa-wallet"></i> <span id="h-bal-av">0.00</span></div>
+            <div style="color: var(--success); margin-left: 5px;"><i class="fa-solid fa-trophy"></i> <span id="h-bal-win">0.00</span></div>
+            <div class="notif-bell" onclick="openModal('modal-notifications'); loadNotificationsUI();">
+                <i class="fa-solid fa-bell"></i>
+                <span class="notif-badge" id="notif-count" style="display:none;">0</span>
+            </div>
+        </div>
+    </header>
+    <main class="content">
+        
+        <div id="slider-wrapper">
+            <div id="slider-container"></div>
+        </div>
+
+        <div class="filter-scroll" id="cat-filters">
+            <button class="filter-btn active" onclick="filterMatchesByCategory('ALL', this)">ALL</button>
+            <button class="filter-btn" onclick="filterMatchesByCategory('BR', this)">BR MODES</button>
+            <button class="filter-btn" onclick="filterMatchesByCategory('CS', this)">CS MODES</button>
+            <button class="filter-btn" onclick="filterMatchesByCategory('LONE WOLF', this)">LONE WOLF</button>
+            <button class="filter-btn" onclick="filterMatchesByCategory('FREE', this)">FREE MATCH</button>
+        </div>
+        
+        <button class="tmf-btn" onclick="openAllRulesModal()" style="background: var(--bg-input); border: 1px dashed var(--primary); color: var(--primary); margin-bottom: 15px; box-shadow: 0 0 10px rgba(0,210,255,0.1);">
+            <i class="fa-solid fa-book"></i> READ GENERAL RULES
+        </button>
+
+        <div class="mode-grid" id="mode-container"></div>
+    </main>
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchNav('home')"><i class="fa-solid fa-house"></i>HOME</div>
+        <div class="nav-item" onclick="openModal('modal-chat-list'); loadRecentChats();"><i class="fa-solid fa-comments"></i>CHAT</div>
+        <div class="nav-item" onclick="openModal('modal-wallet')"><i class="fa-solid fa-wallet"></i>WALLET</div>
+        <div class="nav-item" onclick="openModal('modal-profile')"><i class="fa-solid fa-user"></i>ME</div>
+    </nav>
+</div>
+
+<div class="full-screen-modal" id="modal-forgot-pass">
+    <div class="modal-header" style="background:var(--bg-nav); z-index: 10;"><i class="fa-solid fa-arrow-left" onclick="closeFullScreenModal('modal-forgot-pass')"></i> RESET PASSWORD</div>
+    <div class="modal-body" style="padding-top:20px;">
+        <div id="fp-step-1">
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:20px; text-align:center;">Enter your email to receive a password reset link.</p>
+            <input type="email" id="fp-mail" class="tmf-input" placeholder="Registered Email Address">
+            <button class="tmf-btn btn-blue" id="fp-reset-btn" onclick="requestResetPass()">SEND RESET LINK</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-deposit-new">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-deposit-new')"></i> ADD MONEY</div>
+    <div class="modal-body">
+        
+        <div class="dep-tab-container">
+            <div class="dep-tab bkash" onclick="switchDepMethod('bkash')"><img src="https://i.postimg.cc/CL3y6Vv8/Bkash.jpg"> bKash</div>
+            <div class="dep-tab rocket" onclick="switchDepMethod('rocket')"><img src="https://i.postimg.cc/bwPPwhQh/Rocket-icon.jpg"> Rocket</div>
+            <div class="dep-tab nagad" onclick="switchDepMethod('nagad')"><img src="https://i.postimg.cc/1zMjPxKr/Nagad-icon.jpg"> Nagad</div>
+        </div>
+        
+        <div id="dep-dynamic-color-box" class="dep-box">
+            <div id="dep-dynamic-content">
+                </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" id="modal-chat-list">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-chat-list')"></i> <span>MESSAGES</span></div>
+    <div class="modal-body">
+        <h3 style="font-family:var(--font-head); font-size:0.9rem; margin-bottom:15px; color:var(--primary); border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">RECENT CHATS</h3>
+        <div id="recent-chats-container"></div>
+    </div>
+</div>
+
+<div class="modal" id="modal-chat-room">
+    <div class="modal-header" style="z-index: 5002;">
+        <i class="fa-solid fa-arrow-left" onclick="closeModal('modal-chat-room')"></i> 
+        <span id="chat-room-name">Support</span>
+        <span id="chat-online-status" style="margin-left:auto; font-size:0.65rem; color:var(--success);"><i class="fa-solid fa-circle" style="font-size:0.5rem;"></i> Online</span>
+    </div>
+    <div class="chat-room-body" id="chat-messages-container"></div>
+    <div class="chat-input-area">
+        <label for="chat-img-upload" style="cursor:pointer; color:var(--primary); font-size:1.2rem; padding:5px;"><i class="fa-solid fa-image"></i></label>
+        <input type="file" id="chat-img-upload" accept="image/*" style="display:none;" onchange="sendImage(this)">
+        <input type="text" id="chat-input" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
+        <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<div class="modal" id="modal-all-rules">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-all-rules')"></i> <span>GENERAL RULES</span></div>
+    <div class="modal-body">
+        <h1 class="glow-title-all-rules">ALL MATCH RULES</h1>
+        <div class="rule-card-pro notice-card">
+            <h2>GENERAL NOTICE</h2>
+            <p>All rules are listed below in mode-wise sections.</p>
+        </div>
+        <div id="all-rules-container"></div>
+    </div>
+</div>
+
+<div class="modal" id="modal-rules">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-rules')"></i> <span id="r-title-head">RULES</span></div>
+    <div class="modal-body"><div class="rules-box" id="rules-content">Loading rules...</div></div>
+</div>
+
+<div class="modal modal-bottom" id="modal-prizes">
+    <div class="modal-content-wrap">
+        <div class="modal-header" style="border-top-left-radius: var(--radius-modal); border-top-right-radius: var(--radius-modal); border-bottom: none; justify-content: space-between;">
+            <span>PRIZE POOL</span><i class="fa-solid fa-xmark" onclick="closeModal('modal-prizes')"></i> 
+        </div>
+        <div class="modal-body" style="padding-top: 0;"><ul class="prize-list-ul" id="prize-list-ul"></ul></div>
+    </div>
+</div>
+
+<div class="modal" id="modal-notifications">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-notifications')"></i> <span>NOTIFICATIONS</span></div>
+    <div class="modal-body" id="notif-list-container"></div>
+</div>
+
+<div class="modal" id="modal-notice">
+    <div class="modal-header"><i class="fa-solid fa-xmark" onclick="closeModal('modal-notice')"></i> <span>ANNOUNCEMENT</span></div>
+    <div class="modal-body">
+        <h3 id="notice-title" style="color:var(--primary); font-family:var(--font-head); margin-bottom:10px;">NOTICE</h3>
+        <p id="notice-msg" style="font-size:0.85rem; color:var(--text-main); line-height:1.6; white-space:pre-line;"></p>
+        <button class="tmf-btn btn-blue" style="margin-top:20px;" onclick="closeModal('modal-notice')">UNDERSTOOD</button>
+    </div>
+</div>
+
+<div class="modal" id="modal-deposit-status">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-deposit-status')"></i> <span>DEPOSIT HISTORY</span></div>
+    <div class="modal-body" id="deposit-list-container"></div>
+</div>
+
+<div class="modal" id="modal-matches">
+    <div class="modal-header">
+        <i class="fa-solid fa-arrow-left" onclick="closeModal('modal-matches')"></i> 
+        <span id="m-title-head" style="flex:1;">MATCHES</span>
+        <button class="badge" onclick="showRules(currentMode)" style="background:var(--primary); color:var(--text-inverse); font-family:var(--font-head); padding: 5px 12px;">
+            <i class="fa-solid fa-book"></i> RULES
+        </button>
+    </div>
+    <div class="tabs">
+        <div class="tab active" id="tab-ongoing" onclick="switchMatchTab('ongoing')">ONGOING</div>
+        <div class="tab" id="tab-results" onclick="switchMatchTab('results')">RESULTS</div>
+    </div>
+    <div class="modal-body" id="match-list-container" style="padding: 15px;"></div>
+</div>
+
+<div class="modal" id="modal-match-details">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-match-details')"></i> MATCH INFO</div>
+    <div class="modal-body" style="padding:0;">
+        <div id="md-top-banner" class="md-top-banner">
+            <div class="md-top-overlay">
+                <h2 id="md-title" class="md-title">MATCH TITLE</h2>
+                <p id="md-no" class="md-subtitle">Match #1</p>
+                <p id="md-time" class="md-subtitle">Jan 01, 10:00 PM</p>
+            </div>
+        </div>
+        <div style="padding: 15px;">
+            <div class="md-grid-btns">
+                <button class="tmf-btn" style="background: rgba(255,204,0,0.1); border: 1px solid var(--warning); color: var(--warning); margin:0;" onclick="openMatchPrizes()">PRIZE POOL</button>
+                <button id="md-rules-btn" class="tmf-btn" style="background: rgba(0,210,255,0.1); border: 1px solid var(--primary); color: var(--primary); margin:0;">RULES & REG</button>
+            </div>
+            <div class="match-stats">
+                <div class="stat-box"><div class="stat-title">ENTRY</div><div class="stat-val" id="md-entry" style="color:var(--warning);">৳0</div></div>
+                <div class="stat-box"><div class="stat-title">PER KILL</div><div class="stat-val" id="md-kill">৳0</div></div>
+                <div class="stat-box"><div class="stat-title">MAP</div><div class="stat-val" id="md-map" style="font-size:0.75rem;">Bermuda</div></div>
+            </div>
+            <div id="md-room-container"></div>
+            <button class="tmf-btn btn-blue" style="margin-top:15px;" onclick="viewParticipants(currentMatchDetails.id)">VIEW PARTICIPANTS</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-join">
+    <div class="modal-header"><i class="fa-solid fa-xmark" onclick="closeModal('modal-join')"></i> JOIN MATCH</div>
+    <div class="modal-body">
+        <h3 id="j-match-title" style="color:var(--primary); font-family:var(--font-head); margin-bottom:10px;">MATCH</h3>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:20px;">
+            Entry Fee: ৳ <span id="j-fee">0</span> will be deducted from your Available Balance.
+        </p>
+        <select id="join-type" class="tmf-input" style="margin-bottom:10px;" onchange="updateJoinInputs()"></select>
+        <div id="join-inputs-container">
+            <input type="text" id="j-ign-1" class="tmf-input" placeholder="Enter Player 1 Name (IGN)">
+            <input type="text" id="j-ign-2" class="tmf-input" placeholder="Enter Player 2 Name (IGN)" style="display:none;">
+            <input type="text" id="j-ign-3" class="tmf-input" placeholder="Enter Player 3 Name (IGN)" style="display:none;">
+            <input type="text" id="j-ign-4" class="tmf-input" placeholder="Enter Player 4 Name (IGN)" style="display:none;">
+        </div>
+        <button class="tmf-btn btn-blue" id="confirm-join-btn" style="margin-top:10px;" onclick="confirmJoin()">CONFIRM JOIN</button>
+        <p style="font-size:0.75rem; color:var(--success); margin-top:15px; text-align:center; background: rgba(0,255,65,0.1); padding: 10px; border-radius: 8px;">
+            রুম আইডি এবং পাসওয়ার্ড ম্যাচ শুরু হওয়ার ৫ মিনিট আগে দেওয়া হবে ✅
+        </p>
+    </div>
+</div>
+
+<div class="modal" id="modal-participants">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-participants')"></i> PARTICIPANTS</div>
+    <div class="modal-body" id="participants-list"></div>
+</div>
+
+<div class="modal" id="modal-edit-team">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-edit-team')"></i> EDIT TEAM</div>
+    <div class="modal-body">
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:15px; text-align:center;">Update your team's In-Game Names (IGN)</p>
+        <div id="edit-team-inputs"></div>
+        <button class="tmf-btn btn-blue" onclick="saveEditedTeam()">SAVE CHANGES</button>
+    </div>
+</div>
+
+<div class="modal" id="modal-result-details">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-result-details')"></i> MATCH RESULT</div>
+    <div class="modal-body" id="result-details-container"></div>
+</div>
+
+<div class="modal" id="modal-wallet">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-wallet')"></i> WALLET</div>
+    <div class="modal-body">
+        <div class="dual-balance">
+            <div class="bal-card">
+                <div class="stat-title">AVAILABLE BAL</div>
+                <div class="stat-val" style="font-size:1.2rem;">৳ <span class="u-bal-av">0.00</span></div>
+            </div>
+            <div class="bal-card">
+                <div class="stat-title">WINNING BAL</div>
+                <div class="stat-val" style="font-size:1.2rem; color:var(--success);">৳ <span class="u-bal-win">0.00</span></div>
+            </div>
+        </div>
+        <div style="background:var(--bg-input); padding:15px; border-radius:var(--radius-app); margin-bottom:15px;">
+            <p style="font-size:0.65rem; color:var(--primary); margin-bottom:10px;"><i class="fa-solid fa-building-columns"></i> DEPOSIT FUNDS</p>
+            <button class="tmf-btn btn-blue" onclick="openAddMoneyModal1()">+ ADD MONEY</button>
+            <button class="tmf-btn" onclick="loadDepositStatus(userData.uid)" style="background:transparent; border:1px solid var(--primary); color:var(--primary); margin-top:5px; margin-bottom: 0;">VIEW DEPOSIT HISTORY</button>
+        </div>
+        <button class="tmf-btn btn-red" onclick="openModal('modal-withdraw')">WITHDRAW WINNINGS</button>
+        <h3 style="font-family:var(--font-head); font-size:0.9rem; margin-top:25px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">RECENT TRANSACTIONS</h3>
+        <div class="tx-list" id="tx-history"></div>
+    </div>
+</div>
+
+<div class="modal" id="modal-withdraw">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-withdraw')"></i> WITHDRAW WINNINGS</div>
+    <div class="modal-body">
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:15px; text-align:center;">Withdraw your winnings to your bKash or Nagad account.</p>
+        <select id="w-method" class="tmf-input">
+            <option value="" disabled selected>Select Payment Method</option>
+            <option value="bKash">bKash</option>
+            <option value="Nagad">Nagad</option>
+        </select>
+        <input type="number" id="w-amount" class="tmf-input" placeholder="Amount (Min 100)">
+        <input type="number" id="w-number" class="tmf-input" placeholder="Account Number">
+        <button class="tmf-btn btn-blue" id="with-btn" onclick="reqWithdraw()">SUBMIT WITHDRAW</button>
+    </div>
+</div>
+
+<div class="modal" id="modal-profile">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-profile')"></i> ME</div>
+    <div class="modal-body">
+        <div style="text-align:center; margin-bottom:20px; position:relative;">
+            <h2 id="p-nickname" style="font-family:var(--font-head); color:var(--primary); font-size: 1.8rem; margin-bottom:10px; word-wrap:break-word;">NICKNAME</h2>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:15px; display:flex; flex-direction:column; gap:5px; background:var(--bg-input); border-radius:10px; padding:12px; border:var(--border-card); text-align:left;">
+                <span><i class="fa-solid fa-user" style="width:20px; text-align:center;"></i> Username: <b id="p-name" style="color:var(--text-main);">PLAYER</b></span>
+                <span><i class="fa-solid fa-envelope" style="width:20px; text-align:center;"></i> Email: <b id="p-mail" style="color:var(--text-main);">email@gmail.com</b></span>
+                <span><i class="fa-solid fa-phone" style="width:20px; text-align:center;"></i> Mobile: <b id="p-phone" style="color:var(--text-main);">Not Provided</b></span>
+                <span><i class="fa-solid fa-id-card" style="width:20px; text-align:center;"></i> UID: <b id="p-uid" style="color:var(--success); font-family:var(--font-head);">PENDING...</b> 
+                    <i class="fa-regular fa-copy" onclick="copyTxt(userData.uidNumber)" style="cursor:pointer; color:var(--primary); margin-left:10px;"></i>
+                </span>
+            </div>
+            <button class="badge" onclick="openModal('modal-edit-profile')" style="position:absolute; top:0; right:0; background:rgba(0,210,255,0.1); border:1px solid var(--primary); color:var(--primary);"><i class="fa-solid fa-pen"></i> EDIT</button>
+        </div>
+        
+        <div class="match-stats" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom:20px;">
+            <div class="stat-box"><div class="stat-title">MATCHES</div><div class="stat-val" id="p-matches">0</div></div>
+            <div class="stat-box"><div class="stat-title">TOTAL WIN</div><div class="stat-val" style="color:var(--success);">৳ <span id="p-total-win">0</span></div></div>
+            <div class="stat-box"><div class="stat-title">TOTAL DEP</div><div class="stat-val" style="color:var(--primary);">৳ <span id="p-total-dep">0</span></div></div>
+        </div>
+
+        <button class="tmf-btn" style="background:rgba(0,255,65,0.1); border:1px dashed var(--success); color:var(--success); margin-bottom:20px;" onclick="openModal('modal-referral')"><i class="fa-solid fa-users"></i> REFER & EARN BONUS</button>
+        <button class="tmf-btn" style="background:rgba(0,210,255,0.1); border:1px solid var(--primary); color:var(--primary); margin-bottom: 10px;" onclick="openThemesModal()"><i class="fa-solid fa-palette"></i> CHANGE THEME</button>
+        <button class="tmf-btn" style="background:transparent; border:1px solid var(--primary); color:var(--primary);" onclick="openModal('modal-chpass')">CHANGE PASSWORD</button>
+        <button class="tmf-btn btn-red" onclick="logout()">LOGOUT</button>
+        <div style="text-align:center; margin-top:20px; font-size:0.75rem; color:var(--text-muted); font-family:var(--font-main);">
+            Version: <span id="app-version-display">Unknown</span>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-edit-profile">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-edit-profile')"></i> EDIT PROFILE</div>
+    <div class="modal-body">
+        <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Email Address</label>
+        <input type="email" id="ep-email" class="tmf-input" placeholder="Email" readonly style="opacity:0.6;">
+        <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Username (Unique)</label>
+        <input type="text" id="ep-name" class="tmf-input" placeholder="New Username" oninput="checkUsernameAvailability()">
+        <p id="ep-name-status" style="font-size:0.7rem; margin-top:-8px; margin-bottom:10px;"></p>
+        <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Nickname</label>
+        <input type="text" id="ep-nickname" class="tmf-input" placeholder="In-Game Nickname">
+        <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Mobile Number</label>
+        <input type="tel" id="ep-mobile" class="tmf-input" placeholder="Mobile Number">
+        <button class="tmf-btn btn-blue" id="ep-save-btn" onclick="updateProfile()">SAVE CHANGES</button>
+    </div>
+</div>
+
+<div class="modal" id="modal-referral">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-referral')"></i> REFER & EARN</div>
+    <div class="modal-body" style="text-align:center;">
+        <i class="fa-solid fa-gift" style="font-size:3rem; color:var(--primary); margin-bottom:15px;"></i>
+        <h3 style="color:var(--primary); font-family:var(--font-head); margin-bottom:10px;">INVITE FRIENDS</h3>
+        <p style="font-size:0.8rem; color:var(--text-main); margin-bottom:20px; line-height:1.5;">Share your promo code with your friends. When they register using your code and make a deposit, you get a <b>3% bonus</b> from their entry fees automatically added to your winning balance!</p>
+        <div style="background:var(--bg-input); padding:15px; border-radius:var(--radius-app); margin-bottom:20px; border:1px dashed var(--primary); position:relative;">
+            <p style="font-size:0.7rem; color:var(--text-muted); margin-bottom:5px;">YOUR PROMO CODE:</p>
+            <div style="display:flex; justify-content:center; align-items:center; gap:15px;">
+                <h2 style="font-family:var(--font-head); color:var(--text-main); letter-spacing:2px; margin:0;" id="ref-code-display">LOADING</h2>
+                <button class="badge" onclick="copyPromoCode()" style="border:1px solid var(--primary); background:rgba(0,210,255,0.1); color:var(--primary);"><i class="fa-regular fa-copy"></i> COPY</button>
+            </div>
+        </div>
+        <button class="tmf-btn btn-blue" onclick="copyReferLink()"><i class="fa-solid fa-share-nodes"></i> COPY SHARE LINK</button>
+    </div>
+</div>
+
+<div class="modal" id="modal-themes">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-themes')"></i> APP THEMES</div>
+    <div class="modal-body" id="theme-grid-container"></div>
+</div>
+
+<div class="modal" id="modal-chpass">
+    <div class="modal-header"><i class="fa-solid fa-arrow-left" onclick="closeModal('modal-chpass')"></i> CHANGE PASSWORD</div>
+    <div class="modal-body">
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:20px; text-align:center;">Change your account password securely.</p>
+        <div class="pass-wrapper">
+            <input type="password" id="cp-old" class="tmf-input" placeholder="Old Password">
+            <i class="fa-solid fa-eye pass-eye" onclick="togglePass('cp-old', this)"></i>
+        </div>
+        <div class="pass-wrapper">
+            <input type="password" id="cp-new" class="tmf-input" placeholder="New Password (Min 6 chars)">
+            <i class="fa-solid fa-eye pass-eye" onclick="togglePass('cp-new', this)"></i>
+        </div>
+        <div class="pass-wrapper">
+            <input type="password" id="cp-confirm" class="tmf-input" placeholder="Confirm New Password">
+            <i class="fa-solid fa-eye pass-eye" onclick="togglePass('cp-confirm', this)"></i>
+        </div>
+        <p id="cp-error" style="color:var(--accent); font-size:0.75rem; text-align:center; margin-bottom:10px;"></p>
+        <button class="tmf-btn btn-blue" onclick="handleChangePassword()">UPDATE PASSWORD</button>
+    </div>
+</div>
+
+<div class="telegram-wrapper">
+    <div class="telegram-float" onclick="openTelegram()">
+        <i class="fa-brands fa-telegram"></i>
+    </div>
+</div>
+<script>
+// ==========================================
+// FIREBASE CONFIGURATION & INIT
+// ==========================================
+const firebaseConfig = {
+    apiKey: "AIzaSyBVWi_a4KvS7zHOlq4d4ighCWhfC9-V0lo",
+    authDomain: "tournament-app-deba0.firebaseapp.com",
+    databaseURL: "https://tournament-app-deba0-default-rtdb.firebaseio.com",
+    projectId: "tournament-app-deba0"
+};
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+const db = firebase.database();
+const auth = firebase.auth();
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
+
+const BLOCKED_ADMIN_EMAILS =['admin@tmftourbd.com', 'admin@gmail.com', 'owner@tmftourbd.com']; 
+
+// ==========================================
+// BAN SYSTEM (DEVICE + IP)
+// ==========================================
+let deviceId = localStorage.getItem("deviceId");
+if (!deviceId) {
+    deviceId = "dev_" + Math.random().toString(36).substring(2) + Date.now();
+    localStorage.setItem("deviceId", deviceId);
+}
+
+let userIpCached = "unknown_ip";
+
+async function getUserIP() {
+    try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        return data.ip;
+    } catch {
+        return "unknown_ip";
+    }
+}
+
+function triggerBanUI() {
+    document.body.innerHTML = `
+      <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;text-align:center;flex-direction:column;font-family:'Orbitron', sans-serif;">
+        <div>
+          <h1 style="color:#ff0055;margin-bottom:10px;font-size:2rem;">🚫 Access Blocked</h1>
+          <p style="font-family:'Poppins', sans-serif;font-size:1rem;color:#ccc;">Your device or network is restricted.</p>
+        </div>
+      </div>
+    `;
+    if (firebase.auth().currentUser) {
+        firebase.auth().signOut();
+    }
+    throw new Error("Blocked");
+}
+
+async function checkGlobalBan() {
+    try {
+        userIpCached = await getUserIP();
+        const [deviceBan, ipBan] = await Promise.all([
+            db.ref("bannedDevices/" + deviceId).once("value"),
+            db.ref("bannedIPs/" + userIpCached).once("value")
+        ]);
+
+        if (deviceBan.val() === true || ipBan.val() === true) {
+            triggerBanUI();
+        }
+
+        db.ref("bannedDevices/" + deviceId).on('value', snap => {
+            if (snap.val() === true) triggerBanUI();
+        });
+        
+        if (userIpCached !== "unknown_ip") {
+            db.ref("bannedIPs/" + userIpCached).on('value', snap => {
+                if (snap.val() === true) triggerBanUI();
+            });
+        }
+    } catch (e) {
+        if (e.message === "Blocked") throw e;
+    }
+}
+
+// ==========================================
+// GLOBAL STATE VARIABLES
+// ==========================================
+let userData = {
+    available_balance: 0, winning_balance: 0, total_matches: 0, total_winnings: 0, total_deposits: 0,
+    uid: null, uidNumber: null, referral_code: null, username: "", nickname: "", mobile_number: "", selectedTheme: "theme-minimal"
+};
+
+let currentMode = "";
+let currentMatchTab = "ongoing";
+let currentMatchDetails = null; 
+
+let userSyncListenerRef = null, matchesListenerRef = null, matchDetailsListenerRef = null, rulesListenerRef = null, allRulesListenerRef = null, depositStatusListener = null, depositNumberListenerRef = null, appVersionListenerRef = null, userTransactionsListener = null, currentChatRef = null;
+
+let userNotifications =[]; let unreadNotifsCount = 0; let notifiedRoomIds = new Set(); let notificationListenersInitialized = false;
+let currentChatId = null; 
+let joiningMatchId = null; let joiningFee = 0; let joiningTitle = ""; let matchCountsData = {};
+let openModalsStack =[];
+
+const gameModes =[
+    { id: "BR SOLO", img: "https://i.imgur.com/1z0vLzE.jpeg", cat: "BR" }, { id: "BR DUO", img: "https://i.imgur.com/1z0vLzE.jpeg", cat: "BR" }, { id: "BR SQUAD", img: "https://i.imgur.com/1z0vLzE.jpeg", cat: "BR" }, { id: "BR SURVIVAL", img: "https://i.imgur.com/GN1DRVp.jpeg", cat: "BR" }, { id: "CS 2V2", img: "https://i.imgur.com/NFZkYNZ.jpeg", cat: "CS" }, { id: "CS 4V4", img: "https://i.imgur.com/Vk2qhtl.jpeg", cat: "CS" }, { id: "LONE WOLF 1V1", img: "https://i.imgur.com/qZEitbB.jpeg", cat: "LONE WOLF" }, { id: "LONE WOLF 2V2", img: "https://i.imgur.com/NFZkYNZ.jpeg", cat: "LONE WOLF" }, { id: "FREE MATCH", img: "https://i.imgur.com/lw8rt2W.jpeg", cat: "FREE" }
+];
+
+let currentDepositNumbers = { bkash: "Not Available", nagad: "Not Available", rocket: "Not Available" };
+
+// Update URL Logic
+const APP_VERSION = "1.0.1";
+const APP_VERSION_CODE = 2;
+let forceUpdateUrl = "https://tmftourbd.netlify.app/";
+
+function checkForceUpdate(){
+    db.ref('appConfig/forceUpdate').off();
+    db.ref('appConfig/forceUpdate').on('value', snap=>{
+        const data = snap.val();
+        if(data && data.enabled === true){
+            const selectedVersionCode = Number(data.selectedVersionCode) || 0;
+            if (APP_VERSION_CODE < selectedVersionCode) {
+                if(data.updateUrl) forceUpdateUrl = data.updateUrl;
+                var updateLinkEl = document.getElementById("updateLink");
+                if (updateLinkEl) updateLinkEl.href = forceUpdateUrl;
+                document.getElementById('force-update-popup').style.display = "flex";
+            }
+        }
+    });
+}
+function goToUpdate(){ openUpdateLink(forceUpdateUrl); }
+function openUpdateLink(updateUrl) {
+    try {
+        if (window.Android && typeof Android !== "undefined" && typeof Android.openExternal === "function") {
+            Android.openExternal(updateUrl); return;
+        }
+        window.open(updateUrl, '_blank');
+    } catch (e) { window.location.href = updateUrl; }
+}
+function copyUpdateLink() { copyTxt(forceUpdateUrl); }
+function exitApp(){ document.body.innerHTML = "<h2 style='text-align:center;margin-top:50%;color:white;'>App Closed. Please update.</h2>"; }
+window.addEventListener('DOMContentLoaded', checkForceUpdate);
+
+// ==========================================
+// AUTHENTICATION & ASYNC DATA LOADING
+// ==========================================
+auth.onAuthStateChanged(async user => {
+    let authScreen = document.getElementById('auth-screen');
+    let appMain = document.getElementById('app-main');
+    let loader = document.getElementById('global-loader');
+
+    try {
+        await checkGlobalBan();
+
+        if (user) {
+            if(authScreen) authScreen.style.display = 'none';
+            if(appMain) appMain.style.display = 'none'; 
+            if(loader) loader.style.display = 'flex'; // Show loader while fetching
+            
+            // Save Device ID and IP on login
+            db.ref("users/" + user.uid).update({
+                deviceId: deviceId,
+                ip: userIpCached
+            });
+
+            initializeSession(user.uid);
+        } else {
+            if(authScreen) authScreen.style.display = 'flex';
+            if(appMain) appMain.style.display = 'none';
+            if(loader) loader.style.display = 'none';
+        }
+    } catch(e) {
+        console.warn("Blocked by ban system.");
+    }
+});
+
+async function initializeSession(uid) {
+    try {
+        // Guarantee data is loaded ONCE first to prevent UI flickering or reset
+        let snap = await db.ref('users/' + uid).once('value');
+        if (!snap.exists()) {
+            await new Promise(r => setTimeout(r, 1000));
+            snap = await db.ref('users/' + uid).once('value');
+        }
+
+        if (snap.exists()) {
+            const data = snap.val();
+            if (data.banned === true) {
+                triggerBanUI();
+                return;
+            }
+            updateLocalUser(uid, data);
+            setupRealtimeUserSync(uid); 
+            
+            document.getElementById('global-loader').style.display = 'none';
+            document.getElementById('app-main').style.display = 'flex';
+            
+            applyThemeUI(userData.selectedTheme || 'theme-minimal');
+            loadAppSliders();
+            listenMatchCounts();
+            listenAppVersion();
+            listenDepositNumber();
+            listenTransactions(uid);
+            listenNotices();
+            filterMatchesByCategory('ALL');
+            
+            if (!notificationListenersInitialized) { setupNotificationListeners(); notificationListenersInitialized = true; }
+            checkNotificationPermission();
+        } else {
+            auth.signOut();
+        }
+    } catch(e) {
+        if(e.message !== "Blocked") showToast("Failed to connect. Check internet.");
+    }
+}
+
+function setupRealtimeUserSync(uid) {
+    if(userSyncListenerRef) userSyncListenerRef.off();
+    userSyncListenerRef = db.ref('users/' + uid);
+    userSyncListenerRef.on('value', snap => {
+        if(snap.exists()) {
+            const data = snap.val();
+            if (data.banned === true) {
+                triggerBanUI();
+                return;
+            }
+            updateLocalUser(uid, data);
+        }
+    });
+}
+
+function updateLocalUser(uid, d) {
+    userData.uid = uid;
+    // Safe assignment - Prevents overriding with 0 if property is temporarily missing
+    if(d.available_balance !== undefined) userData.available_balance = Number(d.available_balance);
+    if(d.winning_balance !== undefined) userData.winning_balance = Number(d.winning_balance);
+    if(d.total_matches !== undefined) userData.total_matches = Number(d.total_matches);
+    if(d.total_winnings !== undefined) userData.total_winnings = Number(d.total_winnings);
+    if(d.total_deposits !== undefined) userData.total_deposits = Number(d.total_deposits); else userData.total_deposits = 0;
+    
+    if(d.username !== undefined) userData.username = d.username;
+    if(d.nickname !== undefined) userData.nickname = d.nickname;
+    if(d.referral_code !== undefined) userData.referral_code = d.referral_code;
+    if(d.uidNumber !== undefined) userData.uidNumber = d.uidNumber;
+    if(d.mobile_number !== undefined) userData.mobile_number = d.mobile_number;
+    if(d.selectedTheme !== undefined) userData.selectedTheme = d.selectedTheme;
+
+    // Update DOM Elements
+    document.getElementById('h-bal-av').innerText = userData.available_balance.toFixed(2); 
+    document.getElementById('h-bal-win').innerText = userData.winning_balance.toFixed(2);
+    document.querySelectorAll('.u-bal-av').forEach(el => el.innerText = userData.available_balance.toFixed(2)); 
+    document.querySelectorAll('.u-bal-win').forEach(el => el.innerText = userData.winning_balance.toFixed(2));
+    
+    document.getElementById('p-nickname').innerText = userData.nickname || userData.username || "PLAYER"; 
+    document.getElementById('p-name').innerText = userData.username; 
+    document.getElementById('p-mail').innerText = auth.currentUser ? auth.currentUser.email : ""; 
+    document.getElementById('p-phone').innerText = userData.mobile_number || "Not Provided"; 
+    document.getElementById('p-uid').innerText = userData.uidNumber || "PENDING...";
+    document.getElementById('p-matches').innerText = userData.total_matches; 
+    document.getElementById('p-total-win').innerText = userData.total_winnings.toFixed(2); 
+    document.getElementById('p-total-dep').innerText = (userData.total_deposits || 0).toFixed(2);
+    document.getElementById('ref-code-display').innerText = userData.referral_code || "LOADING";
+
+    if (d.selectedTheme && document.body.className !== d.selectedTheme) {
+        applyThemeUI(d.selectedTheme);
+    }
+}
+
+// ==========================================
+// UNLIMITED UNIQUE THEME LOGIC
+// ==========================================
+function loadThemesUI() {
+    const container = document.getElementById('theme-grid-container');
+    const themes =[
+        { id: 'theme-cyberpunk', name: 'NEON CYBER', desc: 'Glitch, sharp edges, orbitron', icon: 'fa-bolt' },
+        { id: 'theme-minimal', name: 'MINIMAL LIGHT', desc: 'Clean, bright, rounded', icon: 'fa-mobile-screen' },
+        { id: 'theme-glass', name: 'GLASS OCEAN', desc: 'Translucent, blurred backgrounds', icon: 'fa-water' },
+        { id: 'theme-gaming', name: 'RETRO GAMING', desc: 'Dark, dashed borders, red', icon: 'fa-gamepad' },
+        { id: 'theme-gold', name: 'ROYAL GOLD', desc: 'Elegant, serif, gold accents', icon: 'fa-crown' },
+        { id: 'theme-amoled', name: 'AMOLED BLACK', desc: 'Pure black, high contrast', icon: 'fa-moon' },
+        { id: 'theme-gradient-purple', name: 'PURPLE NEBULA', desc: 'Deep purples, smooth gradients', icon: 'fa-meteor' },
+        { id: 'theme-hacker', name: 'TERMINAL', desc: 'Green text, pure black bg', icon: 'fa-terminal' },
+        { id: 'theme-anime', name: 'SAKURA PINK', desc: 'Pastel pinks, soft, bouncy', icon: 'fa-heart' },
+        { id: 'theme-fire', name: 'INFERNO', desc: 'Deep reds, fiery gradients', icon: 'fa-fire' },
+        { id: 'theme-ocean', name: 'DEEP DIVE', desc: 'Deep teal, cyan accents', icon: 'fa-droplet' },
+        { id: 'theme-retro', name: 'SYNTHWAVE', desc: '80s pink, cyan, dark purple', icon: 'fa-record-vinyl' },
+        { id: 'theme-luxury', name: 'PLATINUM', desc: 'Navy blue, silver accents', icon: 'fa-gem' },
+        { id: 'theme-pastel', name: 'SOFT PASTEL', desc: 'Mint, peach, bright UI', icon: 'fa-palette' },
+        { id: 'theme-material', name: 'MATERIAL UI', desc: 'Classic Google design', icon: 'fa-layer-group' },
+        { id: 'theme-space', name: 'GALAXY', desc: 'Dark violet, glowing borders', icon: 'fa-rocket' },
+        { id: 'theme-matrix', name: 'MATRIX', desc: 'Falling green code style', icon: 'fa-barcode' },
+        { id: 'theme-sunset', name: 'SUNSET DUSK', desc: 'Warm oranges, reds, yellows', icon: 'fa-sun' },
+        { id: 'theme-ice', name: 'FROSTBITE', desc: 'Frosty whites, light cyan', icon: 'fa-snowflake' },
+        { id: 'theme-orange-dark', name: 'CARBON ORANGE', desc: 'Charcoal bg, vivid orange', icon: 'fa-fire-flame-curved' }
+    ];
+
+    container.innerHTML = `<div class="theme-grid">
+        ${themes.map(t => `
+            <div class="theme-card ${userData.selectedTheme === t.id ? 'active' : ''}" onclick="saveTheme('${t.id}')">
+                <i class="fa-solid ${t.icon} theme-icon"></i>
+                <div style="flex:1; text-align:left;">
+                    <div class="theme-title">${t.name}</div>
+                    <div class="theme-desc">${t.desc}</div>
+                </div>
+            </div>
+        `).join('')}
+    </div>`;
+}
+
+function applyThemeUI(themeClass) {
+    if (!themeClass) themeClass = 'theme-minimal';
+    document.body.className = themeClass; 
+    userData.selectedTheme = themeClass;
+}
+
+function saveTheme(themeClass) {
+    applyThemeUI(themeClass);
+    if(!userData.uid) return;
+    
+    // Use safe update to avoid touching balances
+    db.ref('users/' + userData.uid).update({ selectedTheme: themeClass })
+      .then(() => { 
+          showToast("Theme applied!"); 
+          loadThemesUI(); // Refresh 'ACTIVE' badge
+      })
+      .catch(e => showToast("Failed to save theme online"));
+}
+
+function openThemesModal() { 
+    loadThemesUI(); 
+    openModal('modal-themes'); 
+}
+
+// ==========================================
+// IMAGE SLIDER LOGIC FOR USER APP
+// ==========================================
+let appSliderInterval = null;
+function loadAppSliders() {
+    db.ref('sliders').on('value', snap => {
+        const wrapper = document.getElementById('slider-wrapper');
+        const container = document.getElementById('slider-container');
+        if(!snap.exists() || !snap.hasChildren()) {
+            wrapper.style.display = 'none';
+            return;
+        }
+        wrapper.style.display = 'block';
+        let html = '';
+        let slides =[];
+        snap.forEach(c => slides.push(c.val()));
+        
+        slides.forEach(s => {
+            let linkAttr = s.link ? `onclick="window.open('${escapeHTML(s.link)}', '_blank')"` : '';
+            html += `<img src="${escapeHTML(s.image)}" class="slide-img" ${linkAttr}>`;
+        });
+        container.innerHTML = html;
+
+        if(appSliderInterval) clearInterval(appSliderInterval);
+        if(slides.length > 1) {
+            let idx = 0;
+            appSliderInterval = setInterval(() => {
+                idx = (idx + 1) % slides.length;
+                container.style.transform = `translateX(-${idx * 100}%)`;
+            }, 2000); // Wait 2 seconds before changing slide
+        } else {
+            container.style.transform = `translateX(0%)`;
+        }
+    });
+}
+
+// ==========================================
+// DEPOSIT & WITHDRAW SYSTEM (DYNAMIC UI)
+// ==========================================
+function listenDepositNumber() {
+    if (depositNumberListenerRef) depositNumberListenerRef.off();
+    depositNumberListenerRef = db.ref('paymentNumbers'); 
+    depositNumberListenerRef.on('value', snap => {
+        if (snap.exists()) {
+            let val = snap.val();
+            if (val.bkash) currentDepositNumbers.bkash = val.bkash;
+            if (val.nagad) currentDepositNumbers.nagad = val.nagad;
+            if (val.rocket) currentDepositNumbers.rocket = val.rocket;
+            
+            // If modal is open, re-render to update numbers live
+            if(document.getElementById('modal-deposit-new').classList.contains('active')) {
+                renderDepositUI(selectedDepMethod || 'bkash');
+            }
+        }
+    });
+}
+
+function openAddMoneyModal1() {
+    openModal('modal-deposit-new');
+    switchDepMethod('bkash'); // Default tab
+}
+
+function switchDepMethod(method) {
+    selectedDepMethod = method;
+    document.querySelectorAll('.dep-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.dep-tab.${method}`).classList.add('active');
+    renderDepositUI(method);
+}
+
+function renderDepositUI(method) {
+    const configs = {
+        bkash: { name: 'BKASH', code: '*247#' },
+        nagad: { name: 'NAGAD', code: '*167#' },
+        rocket: { name: 'Rocket', code: '*322#' } 
+    };
+    const c = configs[method];
+    const num = currentDepositNumbers[method] || "Not Available";
+    
+    document.getElementById('dep-dynamic-color-box').className = `dep-box ${method} active`;
+    
+    document.getElementById('dep-dynamic-content').innerHTML = `
+        <div class="dep-box-title">ট্রানজেকশন আইডি দিন</div>
+        <input type="text" id="new-dep-trxid" class="dep-input" placeholder="ট্রানজেকশন আইডি দিন">
+        <input type="number" id="new-dep-amount" class="dep-input amount" placeholder="Amount (৳)">
+        
+        <div class="dep-instruction">
+            <div class="dep-bullet"><i class="fa-solid fa-circle"></i> <span>${c.code} ডায়াল করে আপনার ${c.name} মোবাইল মেনুতে যান অথবা ${c.name} অ্যাপে যান।</span></div>
+            <div class="dep-bullet"><i class="fa-solid fa-circle"></i> <span>Send Money - এ ক্লিক করুন।</span></div>
+            <div class="dep-bullet"><i class="fa-solid fa-circle"></i> 
+                <div style="width:100%;">
+                    প্রাপক নম্বর হিসেবে নিচের এই নম্বরটি লিখুন<br>
+                    <div class="dep-number-box">
+                        <span id="dynamic-dep-num">${num}</span> 
+                        <button class="dep-copy-btn" onclick="copyTxt('${num}')"><i class="fa-regular fa-copy"></i> Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="dep-bullet"><i class="fa-solid fa-circle"></i> <span>নিশ্চিত করতে এখন আপনার ${c.name} মোবাইল মেনু পিন লিখুন।</span></div>
+            <div class="dep-bullet"><i class="fa-solid fa-circle"></i> <span>এখন উপরের বক্সে আপনার Transaction ID এবং Amount দিন আর নিচের VERIFY বাটনে ক্লিক করুন।</span></div>
+        </div>
+        <button class="dep-verify-btn" id="new-dep-verify-btn" onclick="submitNewDepositv2('${method}')">VERIFY</button>
+    `;
+}
+
+function submitNewDepositv2(method) {
+    const amount = Number(document.getElementById('new-dep-amount').value);
+    const txnid = document.getElementById('new-dep-trxid').value.trim();
+    
+    if (amount < 10) return showToast("Minimum amount is 10৳");
+    if (txnid.length < 6) return showToast("Invalid Transaction ID");
+
+    const btn = document.getElementById('new-dep-verify-btn');
+    btn.disabled = true; btn.innerHTML = 'VERIFYING...';
+    
+    const reqId = "DEP-" + Date.now();
+    
+    db.ref('deposit_requests/' + reqId).update({
+        uid: userData.uid,
+        userId: userData.uid,
+        username: userData.username || "",
+        email: auth.currentUser ? auth.currentUser.email : "",
+        mobile: userData.mobile_number || "",
+        method: method,
+        trxId: txnid,
+        amount: amount,
+        status: "pending",
+        timestamp: Date.now()
+    }).then(() => {
+        sendAdminAlertEmail("Deposit Request", {"User ID": userData.uid, "Amount": amount + " BDT", "TrxID": txnid, "Method": method});
+        closeModal('modal-deposit-new');
+        showActionSuccess("Deposit Request Sent Successfully.\nPlease wait 10-20 minutes for verification.");
+    }).catch(e => showToast("Error: " + e.message)).finally(() => {
+        btn.disabled = false; btn.innerHTML = 'VERIFY';
+    });
+}
+
+function loadDepositStatus(uid = userData.uid) {
+    if(!uid) return;
+    const container = document.getElementById('deposit-list-container'); 
+    container.innerHTML = '<p style="text-align:center; color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</p>'; 
+    openModal('modal-deposit-status');
+    
+    if(depositStatusListener) depositStatusListener.off(); 
+    depositStatusListener = db.ref('deposit_requests').orderByChild('uid').equalTo(uid);
+    depositStatusListener.on('value', snap => {
+        if(!snap.exists()) { container.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:0.8rem;">No deposit history found</p>'; return; }
+        let html = ""; let deps =[]; snap.forEach(c => deps.push(c.val()));
+        deps.sort((a,b) => (b.timestamp || b.time || 0) - (a.timestamp || a.time || 0)).forEach(d => { 
+            let dTime = new Date(d.timestamp || d.time).toLocaleString(); 
+            let colorClass = d.status === 'approved' ? 'st-approved' : (d.status === 'rejected' ? 'st-rejected' : 'st-pending'); 
+            html += `<div class="notif-item"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span style="font-weight:bold; color:var(--primary);">৳${d.amount}</span><span class="status-badge ${colorClass}">${d.status.toUpperCase()}</span></div><div style="font-size:0.75rem; color:var(--text-main);">Method: ${d.method}</div><div style="font-size:0.6rem; color:var(--text-muted); margin-top:5px;">${dTime}</div></div>`; 
+        }); 
+        container.innerHTML = html;
+    });
+}
+
+function reqWithdraw() {
+    const method = document.getElementById('w-method').value;
+    const number = document.getElementById('w-number').value.trim();
+    const amount = Number(document.getElementById('w-amount').value);
+
+    if (!method || !number || !amount) return showToast("Fill all fields correctly."); 
+    if (amount < 100) return showToast("Minimum withdraw is 100৳"); 
+    if (amount > userData.winning_balance) return showToast("Insufficient winning balance!"); 
+
+    const btn = document.getElementById('with-btn');
+    btn.disabled = true; btn.innerHTML = 'SUBMITTING...';
+
+    const reqId = "WIT-" + Date.now();
+    const updates = {};
+    updates['withdraw_requests/' + reqId] = { 
+        uid: userData.uid,
+        userId: userData.uid, 
+        username: userData.username || "", 
+        email: auth.currentUser ? auth.currentUser.email : "",
+        mobile: userData.mobile_number || "",
+        method: method, 
+        number: number, 
+        amount: amount, 
+        status: "pending", 
+        timestamp: Date.now() 
+    };
+    
+    // SAFE WITHDRAW (using atomic transaction logic or safe update since rules validate it)
+    const newBal = userData.winning_balance - amount;
+    updates['users/' + userData.uid + '/winning_balance'] = newBal;
+
+    db.ref().update(updates).then(() => {
+        sendAdminAlertEmail("Withdraw Request", {"User ID": userData.uid, "Amount": amount + " BDT", "Account Number": number, "Method": method});
+        closeModal('modal-withdraw');
+        showActionSuccess("Withdrawal request sent. Added in 24 hours.");
+        document.getElementById('w-number').value = ""; document.getElementById('w-amount').value = "";
+    }).catch(err => showToast("Failed. Try again.")).finally(() => { btn.disabled = false; btn.innerHTML = 'SUBMIT WITHDRAWAL'; });
+}
+
+function listenTransactions(uid) {
+    if(userTransactionsListener) userTransactionsListener.off();
+    userTransactionsListener = db.ref('transactions').orderByChild('userId').equalTo(uid);
+    userTransactionsListener.on('value', snap => {
+        const txs =[];
+        snap.forEach(c => txs.push(c.val()));
+        renderTransactions(txs);
+    });
+}
+
+function renderTransactions(txArray) {
+    const container = document.getElementById('tx-history'); if(!container) return;
+    txArray.sort((a, b) => (b.time || 0) - (a.time || 0));
+    if (txArray.length === 0) { container.innerHTML = "<p style='text-align:center; color:var(--text-muted); font-size:0.75rem;'>No transactions yet.</p>"; return; }
+    
+    let html = ""; 
+    txArray.slice(0, 15).forEach(tx => { 
+        let colorClass = tx.type === 'join' ? 'tx-join' : (tx.type === 'match_win' || tx.type === 'win' ? 'tx-win' : 'tx-dep'); 
+        let amtColor = tx.amount > 0 ? 'var(--success)' : 'var(--accent)'; 
+        let sign = tx.amount > 0 ? '+' : ''; 
+        let d = new Date(tx.time).toLocaleDateString(); 
+        html += `<div class="tx-item ${colorClass}">
+                    <div>
+                        <div style="color:var(--text-main); font-weight:bold; margin-bottom:3px;">${escapeHTML(tx.title || tx.type)}</div>
+                        <div style="font-size:0.6rem; color:var(--text-muted);">${d}</div>
+                    </div>
+                    <div style="color:${amtColor}; font-family:var(--font-head); font-weight:bold;">${sign}${tx.amount}৳</div>
+                 </div>`; 
+    }); 
+    container.innerHTML = html;
+}
+
+// ==========================================
+// ULTIMATE CHAT SYSTEM FIX (SUPER SMART LOCAL AI)
+// ==========================================
+
+function getSmartReply(message) {
+    const msg = message.toLowerCase();
+
+    if (/(hi|hello|হ্যালো|ওহে|hey|হাই|শুনেন)/.test(msg)) return "হ্যালো বন্ধু! 👋 আমি TMF Pro AI। আপনাকে কীভাবে সাহায্য করতে পারি? ডিপোজিট, উইথড্র, ম্যাচ বা যেকোনো বিষয় নিয়ে আমাকে প্রশ্ন করতে পারেন। 😎";
+    if (/(কেমন আছো|how are you|kemon|ki obostha|obostha)/.test(msg)) return "আমি দারুণ আছি! 🤖 আমি একটি সুপার ফাস্ট এআই বট। আপনার যেকোনো সাহায্যে আমি সবসময় প্রস্তুত।";
+    if (/(deposit|ডিপোজিট|টাকা এড|add money|bkash|nagad|বিকাশ|নগদ|rocket|রকেট|টাকা ভরবো)/.test(msg)) return "ডিপোজিট করতে <b>Wallet</b> থেকে <b>+ ADD MONEY</b> তে যান। বিকাশ/নগদ/রকেট সিলেক্ট করে সেন্ড মানি করুন এবং TrxID দিয়ে ভেরিফাই করুন। ৫-১০ মিনিটে টাকা এড হয়ে যাবে। 💸";
+    if (/(withdraw|উইথড্র|টাকা তুলবো|cash out|ক্যাশ আউট|পেমেন্ট|payment|tk tulbo)/.test(msg)) return "উইথড্র করতে <b>Wallet</b> এ গিয়ে <b>WITHDRAW WINNINGS</b> এ যান। মিনিমাম ১০০৳ হলে উইথড্র করা যাবে। রিকোয়েস্ট দেওয়ার ২৪ ঘন্টার মধ্যে পেমেন্ট পেয়ে যাবেন। 🏦";
+    if (/(room|রুম|id|পাস|pass|password|পাসওয়ার্ড|id pass)/.test(msg) && !/(change|চেঞ্জ|forgot|ভুলে)/.test(msg)) return "ম্যাচের রুম আইডি এবং পাসওয়ার্ড ম্যাচ শুরু হওয়ার <b>ঠিক ৫-১০ মিনিট আগে</b> দেওয়া হয়। আপনি যে ম্যাচে জয়েন করেছেন, তার <b>VIEW DETAILS</b> এ গেলেই ID ও Pass পেয়ে যাবেন! 🎮";
+    if (/(match|ম্যাচ|খেলবো|join|জয়েন|কিভাবে খেলব|kivabe khelbo|play)/.test(msg)) return "ম্যাচ খেলতে <b>Home</b> পেজ থেকে BR, CS বা LONE WOLF সিলেক্ট করুন। এরপর <b>JOIN NOW</b> তে ক্লিক করে আপনার গেমের নাম (IGN) দিন। ব্যালেন্স থাকলে সহজেই জয়েন হয়ে যাবে। 🔥";
+    if (/(free|ফ্রি|মাগনা)/.test(msg)) return "আমাদের অ্যাপে মাঝে মাঝেই <b>FREE MATCH</b> দেওয়া হয়! ফ্রি ম্যাচগুলোতে জয়েন করতে কোনো এন্ট্রি ফি লাগে না। চোখ রাখুন Home পেজে! 🤩";
+    if (/(team|টিম|edit|এডিট|নাম চেঞ্জ|name change|teammate)/.test(msg)) return "ম্যাচে জয়েন করার পর টিমের নাম এডিট করতে চাইলে <b>VIEW DETAILS -> VIEW PARTICIPANTS</b> এ যান। সেখানে আপনার টিমের পাশে থাকা <b>EDIT</b> বাটনে ক্লিক করে নাম আপডেট করতে পারবেন! ✏️";
+    if (/(rule|নিয়ম|রুলস|কিভাবে|rules)/.test(msg)) return "আমাদের টুর্নামেন্টের সব নিয়মাবলি জানতে Home পেজের <b>READ GENERAL RULES</b> এ ক্লিক করুন, অথবা যেকোনো ম্যাচের <b>RULES & REG</b> অপশনটি দেখুন। 📜";
+    if (/(pass change|পাসওয়ার্ড চেঞ্জ|পাস চেঞ্জ|forgot|ভুলে গেছি|reset pass)/.test(msg)) return "পাসওয়ার্ড পরিবর্তন করতে <b>ME</b> (প্রোফাইল) এ গিয়ে <b>CHANGE PASSWORD</b> এ যান। আর ভুলে গেলে লগিন স্ক্রিনের <b>Forgot Password</b> থেকে রিসেট করে নিন। 🔐";
+    if (/(profile|প্রোফাইল|নাম|মোবাইল|mobile|email|ইমেইল|uid)/.test(msg)) return "আপনার প্রোফাইলের নাম বা মোবাইল নাম্বার এডিট করতে <b>ME</b> অপশনে গিয়ে উপরের ডানদিকের <b>EDIT</b> বাটনে ক্লিক করুন। 👤";
+    if (/(refer|রেফার|ইনভাইট|invite|bonus|বোনাস)/.test(msg)) return "বন্ধুদের ইনভাইট করে ৩% লাইফটাইম ডিপোজিট বোনাস পেতে <b>ME -> REFER & EARN BONUS</b> অপশনে যান। সেখানে আপনার প্রোমো কোড পেয়ে যাবেন! 🎁";
+    if (/(theme|থিম|কালার|color|dark|light|ডিজাইন)/.test(msg)) return "অ্যাপের ডিজাইন বা থিম বদলাতে <b>ME -> CHANGE THEME</b> এ যান। সেখানে ২০টিরও বেশি জোস সব থিম আছে! 🎨";
+    if (/(notification|নোটিফিকেশন|মেসেজ সাউন্ড|sound)/.test(msg)) return "যেকোনো আপডেট বা রুম আইডির নোটিফিকেশন পেতে উপরে থাকা 🔔 বেল আইকনে ক্লিক করুন এবং পারমিশন Allow করে দিন।";
+    if (/(balance|ব্যালেন্স|টাকা কত|check balance)/.test(msg)) return "আপনার ব্যালেন্স দেখতে অ্যাপের উপরের দিকে থাকা <b>Wallet Icon</b> বা নিচে <b>WALLET</b> মেনুতে ক্লিক করুন। 💰";
+    if (/(prize|প্রাইজ|পুরস্কার|win amount|winnings)/.test(msg)) return "ম্যাচের প্রাইজ কত তা দেখতে যেকোনো ম্যাচের <b>VIEW DETAILS</b> এ গিয়ে <b>PRIZE POOL</b> বাটনে ক্লিক করুন। 🏆";
+    if (/(update|আপডেট|version|ভার্সন)/.test(msg)) return "অ্যাপের নতুন আপডেট আসলে অটোমেটিক আপনার স্ক্রিনে পপআপ আসবে। তখন UPDATE বাটনে ক্লিক করলেই নতুন ভার্সন পেয়ে যাবেন! 🚀";
+    if (/(admin|এডমিন|staff|owner|কথা|help|সাহায্য|সমস্যা|problem|bot|ai)/.test(msg)) return "অ্যাডমিন বা রিয়েল স্টাফের সাথে কথা বলতে <b>Admin Support</b> চ্যাট রুমে মেসেজ দিন। অথবা অ্যাপের ভাসমান <b>Telegram</b> আইকনে ক্লিক করে আমাদের অফিশিয়াল চ্যানেলে যুক্ত হোন। 🛡️";
+    if (/(tumi ke|who are you|tui ke|apni ke|তুমি কে|তোর নাম|tor nam)/.test(msg)) return "আমি হচ্ছি TMF Tour BD এর <b>অফিসিয়াল স্মার্ট AI বট</b>! আমাকে এমনভাবে ট্রেইন করা হয়েছে যেন আপনার যেকোনো প্রশ্নের উত্তর সাথে সাথে দিতে পারি! 😎";
+
+    const fallbacks =[
+        "দুঃখিত 😔 আমি আপনার কথাটি ঠিক বুঝতে পারিনি। আপনি কি ডিপোজিট, উইথড্র, ম্যাচ বা প্রোফাইল সম্পর্কে জানতে চাচ্ছেন?",
+        "আপনার প্রশ্নটি একটু ক্লিয়ার করে লিখুন। আমি TMF অ্যাপের যেকোনো ফিচারের বিস্তারিত আপনাকে জানাতে পারি! 🤖",
+        "আমি এই বিষয়ে সঠিক উত্তর দিতে পারছি না। অনুগ্রহ করে Admin Support এ মেসেজ দিন। 🤝"
+    ];
+    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+}
+
+function loadRecentChats() {
+    const container = document.getElementById('recent-chats-container');
+    container.innerHTML = `
+        <div class="chat-user-item" onclick="openChatRoom('🤖 AI Support', 'ai_room')">
+            <div style="display:flex; gap:10px; align-items:center;">
+                <div style="width:40px; height:40px; border-radius:50%; background:var(--success); color:#000; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.2rem;"><i class="fa-solid fa-robot"></i></div>
+                <div>
+                    <div style="color:var(--text-main); font-weight:bold; font-size:0.85rem;">AI Bot Support</div>
+                    <div style="color:var(--text-muted); font-size:0.7rem;">Instant Free AI Answers</div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-user-item" onclick="openChatRoom('🧑‍💻 Admin Support', 'admin_room')">
+            <div style="display:flex; gap:10px; align-items:center;">
+                <div style="width:40px; height:40px; border-radius:50%; background:var(--primary); color:#000; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.2rem;"><i class="fa-solid fa-user-shield"></i></div>
+                <div>
+                    <div style="color:var(--text-main); font-weight:bold; font-size:0.85rem;">Admin Support</div>
+                    <div style="color:var(--text-muted); font-size:0.7rem;">Realtime Staff Help</div>
+                </div>
+            </div>
+        </div>
+        <div class="chat-user-item" onclick="openTelegram()">
+            <div style="display:flex; gap:10px; align-items:center;">
+                <div style="width:40px; height:40px; border-radius:50%; background:#0088cc; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.2rem;"><i class="fa-brands fa-telegram"></i></div>
+                <div>
+                    <div style="color:var(--text-main); font-weight:bold; font-size:0.85rem;">Telegram Support</div>
+                    <div style="color:var(--text-muted); font-size:0.7rem;">Join Official Community</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function openChatRoom(name, roomId) {
+    if(!userData || !userData.uid) return;
+    document.getElementById('chat-room-name').innerText = name;
+    openModal('modal-chat-room');
+    
+    if(currentChatRef) currentChatRef.off();
+    
+    currentChatId = userData.uid + "_" + roomId; 
+    currentChatRef = db.ref('chats/' + currentChatId + '/messages');
+    
+    const container = document.getElementById('chat-messages-container');
+    container.innerHTML = '<div id="typing-indicator" style="display:none; font-size:0.7rem; color:var(--text-muted); margin-bottom:5px; text-align:center;">Support is typing...</div>';
+    
+    currentChatRef.on('child_added', snap => {
+        let msg = snap.val();
+        if(!msg) return;
+        
+        let isMe = (msg.senderId === userData.uid) || (msg.sender === userData.uid);
+        let cClass = isMe ? 'sent' : 'received';
+        if(msg.type === 'system') cClass = 'system';
+        
+        let msgText = msg.message || msg.text || "";
+        let timeStr = new Date(msg.timestamp || Date.now()).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        
+        let statusIcon = '';
+        if(isMe) {
+            statusIcon = msg.status === 'seen' ? '<i class="fa-solid fa-check-double" style="color:#34b7f1;"></i>' 
+                       : (msg.status === 'delivered' ? '<i class="fa-solid fa-check-double"></i>' 
+                       : '<i class="fa-solid fa-check"></i>');
+        }
+        
+        let contentHtml = msg.imageUrl ? `<img src="${msg.imageUrl}" style="max-width:100%; border-radius:8px; margin-top:5px;">` : escapeHTML(msgText);
+        
+        let html = `
+        <div class="chat-msg ${cClass}">
+            ${!isMe && msg.type !== 'system' ? `<div style="font-size:0.6rem; opacity:0.7; margin-bottom:2px;">${escapeHTML(msg.senderName || '')}</div>` : ''}
+            <div>${contentHtml}</div>
+            <div class="chat-msg-time">${timeStr} ${statusIcon}</div>
+        </div>`;
+        
+        let typingInd = document.getElementById('typing-indicator');
+        if(typingInd) {
+            typingInd.insertAdjacentHTML('beforebegin', html);
+        } else {
+            container.innerHTML += html;
+        }
+        container.scrollTop = container.scrollHeight;
+    });
+}
+
+function sendMessage() {
+    if(!userData || !userData.uid) return;
+    let text = document.getElementById('chat-input').value.trim();
+    if(!text || !currentChatId) return;
+    document.getElementById('chat-input').value = "";
+    
+    let messagesRef = db.ref('chats/' + currentChatId + '/messages');
+    let msgRef = messagesRef.push();
+    
+    msgRef.update({
+        message: text,
+        senderId: userData.uid,
+        senderName: userData.username || "PLAYER",
+        timestamp: Date.now(),
+        status: "sent"
+    }).then(() => {
+        if (currentChatId.endsWith('_admin_room')) {
+            sendAdminAlertEmail("Support Chat Message", { "User Name": userData.username || "PLAYER", "Message": text });
+            
+            // AUTO REPLY LOGIC (Only fires once)
+            let metaRef = db.ref('chats/' + currentChatId + '/meta');
+            metaRef.once('value').then(snap => {
+                let meta = snap.val() || {};
+                if (!meta.autoReplied) {
+                    messagesRef.push().update({
+                        senderId: "system",
+                        senderName: "Support Bot",
+                        message: "Message Request Sent. Please wait a few minutes.",
+                        timestamp: Date.now(),
+                        type: "system",
+                        status: "delivered"
+                    });
+                    metaRef.update({ autoReplied: true });
+                }
+            });
+        } else if (currentChatId.endsWith('_ai_room')) {
+            // Smart Controlled AI Logic
+            setTimeout(() => {
+                document.getElementById('typing-indicator').style.display = 'block';
+                document.getElementById('chat-messages-container').scrollTop = document.getElementById('chat-messages-container').scrollHeight;
+                setTimeout(() => {
+                    const aiResponse = getSmartReply(text);
+                    messagesRef.push().update({
+                        message: aiResponse,
+                        senderId: "ai_bot",
+                        senderName: "AI Support",
+                        timestamp: Date.now(),
+                        status: "delivered"
+                    });
+                    document.getElementById('typing-indicator').style.display = 'none';
+                    document.getElementById('chat-messages-container').scrollTop = document.getElementById('chat-messages-container').scrollHeight;
+                }, 1000);
+            }, 500);
+        }
+    }).catch(err => {
+        showToast("Message saving failed.");
+    });
+}
+
+function sendImage(input) {
+    if(!input.files || !input.files[0] || !currentChatId) return;
+    let file = input.files[0];
+    let reader = new FileReader();
+    reader.onload = function(e) {
+        let base64 = e.target.result;
+        let messagesRef = db.ref('chats/' + currentChatId + '/messages');
+        messagesRef.push().update({
+            message: "📸 Image",
+            imageUrl: base64,
+            senderId: userData.uid,
+            senderName: userData.username || "PLAYER",
+            timestamp: Date.now(),
+            status: "sent"
+        });
+    };
+    reader.readAsDataURL(file);
+    input.value = "";
+}
+
+// ==========================================
+// MATCHES & JOINING LOGIC
+// ==========================================
+function listenMatchCounts() { 
+    db.ref('meta/matchCounts').off(); 
+    db.ref('meta/matchCounts').on('value', snap => { 
+        matchCountsData = snap.val() || {}; 
+        let activeCatBtn = document.querySelector('.filter-btn.active'); 
+        if(activeCatBtn) activeCatBtn.click(); 
+    }); 
+}
+
+function filterMatchesByCategory(cat, btnElement) { 
+    if (btnElement) { 
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); 
+        btnElement.classList.add('active'); 
+    } 
+    const container = document.getElementById('mode-container'); 
+    const filteredModes = cat === 'ALL' ? gameModes : gameModes.filter(m => m.cat === cat); 
+    container.innerHTML = filteredModes.map(m => { 
+        const count = matchCountsData[m.id] || 0; 
+        return `<div class="mode-card" onclick="openMatches('${m.id}')">${count > 0 ? `<span class="match-count-bubble">${count}</span>` : ''}<img src="${m.img}"><div class="mode-info"><h2>${m.id}</h2></div></div>`; 
+    }).join(''); 
+}
+
+function openMatches(modeId) { 
+    currentMode = modeId; 
+    document.getElementById('m-title-head').innerText = modeId; 
+    switchMatchTab('ongoing'); 
+    openModal('modal-matches'); 
+}
+
+function switchMatchTab(tab) { 
+    currentMatchTab = tab; 
+    document.getElementById('tab-ongoing').classList.remove('active'); 
+    document.getElementById('tab-results').classList.remove('active'); 
+    document.getElementById('tab-' + tab).classList.add('active'); 
+    loadMatchesData(); 
+}
+
+function getModeImage(modeId) { const obj = gameModes.find(m => m.id === modeId); return obj ? obj.img : "https://i.imgur.com/1z0vLzE.jpeg"; }
+
+function loadMatchesData() {
+    const container = document.getElementById('match-list-container');
+    container.innerHTML = '<p style="text-align:center; margin-top:20px; color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</p>';
+
+    if (matchesListenerRef) matchesListenerRef.off();
+    matchesListenerRef = db.ref('matches');
+    
+    matchesListenerRef.on('value', snap => {
+        let html = "";
+        if (!snap.exists()) {
+            container.innerHTML = "<p style='text-align:center; color:var(--text-muted); font-size:0.8rem; margin-top:20px;'>No matches found.</p>"; return;
+        }
+
+        snap.forEach(child => {
+            const m = child.val();
+            const mid = child.key;
+            const matchModeKey = m.gameMode || m.type || m.matchType || m.mode || "";
+            const hasJoined = m.participants && userData && userData.uid && m.participants[userData.uid];
+            const titleText = m.matchTitle || m.title || matchModeKey;
+            
+            const rId = m.room ? (m.room.roomId || m.room.id) : null;
+            const rPass = m.room ? (m.room.roomPass || m.room.pass) : null;
+
+            if (hasJoined && rId && !notifiedRoomIds.has(mid)) {
+                notifiedRoomIds.add(mid);
+                pushLocalNotification(`Room details provided!`, `Room ID: ${rId}, Password: ${rPass}`, Date.now());
+            }
+
+            if (matchModeKey === currentMode) {
+                if (currentMatchTab === 'ongoing' && m.status !== "completed" && !m.isResultPublished && m.status !== "cancelled") {
+                    html += createMatchCard(mid, m, hasJoined, titleText);
+                }
+                else if (currentMatchTab === 'results' && (m.status === "completed" || m.isResultPublished)) {
+                    html += createResultCard(mid, m, titleText);
+                }
+            }
+        });
+        
+        container.innerHTML = html || `<p style='text-align:center; color:var(--text-muted); font-size:0.8rem; margin-top:20px;'>No ${currentMatchTab} matches available.</p>`;
+    });
+}
+
+function createMatchCard(mid, m, hasJoined, titleText) {
+    const mTime = m.dateTime || m.startTime || 0;
+    const isLive = mTime > 0 && mTime <= Date.now();
+    const joinedCount = m.participants ? Object.keys(m.participants).length : (m.joinedPlayers || 0);
+    const slots = m.totalPlayers || m.totalSlots || 48;
+    const prog = Math.min((joinedCount / slots) * 100, 100);
+    const tDate = mTime ? new Date(mTime).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "TBA";
+
+    let btnHtml = "";
+    if (hasJoined) {
+        btnHtml = `<button class="tmf-btn" style="background:var(--success); color:#000; flex:1; margin:0;" disabled>JOINED</button>`;
+    } else if (joinedCount >= slots) {
+        btnHtml = `<button class="tmf-btn" style="background:#444; color:#fff; flex:1; margin:0;" disabled>FULL</button>`;
+    } else {
+        btnHtml = `<button class="tmf-btn btn-blue" style="flex:1; margin:0;" onclick="initJoin('${mid}', '${titleText}', ${m.entryFee || 0})">JOIN NOW</button>`;
+    }
+
+    const cdHtml = `<div class="tmf-countdown" data-time="${mTime}" style="text-align:center; font-size:0.75rem; color:var(--warning); margin-top:12px; font-weight:bold; font-family:var(--font-head); background:rgba(255,204,0,0.1); padding:6px; border-radius:4px; border:1px dashed var(--warning);">Match Starting in ⏰ TBA</div>`;
+
+    return `
+        <div class="match-card">
+            <div class="match-card-header">
+                <div>
+                    <b style="color:var(--primary); font-family:var(--font-head); font-size:0.9rem;">${titleText} #${m.matchId || m.matchNumber || '1'}</b>
+                    <div style="font-size:0.6rem; color:var(--text-muted); margin-top:2px;">${tDate} | Map: ${m.map || 'Bermuda'}</div>
+                </div>
+                <span class="badge ${isLive ? 'b-live' : 'b-up'}">${isLive ? 'LIVE' : 'UPCOMING'}</span>
+            </div>
+            <div class="match-card-body">
+                <div class="match-stats">
+                    <div class="stat-box"><div class="stat-title">PRIZE</div><div class="stat-val">৳${m.totalPrize || 0}</div></div>
+                    <div class="stat-box"><div class="stat-title">PER KILL</div><div class="stat-val">৳${m.perKill || 0}</div></div>
+                    <div class="stat-box"><div class="stat-title">ENTRY</div><div class="stat-val" style="color:var(--warning);">৳${m.entryFee || 0}</div></div>
+                </div>
+                <div class="slots-text"><span>Joined: ${joinedCount}/${slots}</span><span>${slots - joinedCount} Spots Left</span></div>
+                <div class="progress-container"><div class="progress-fill" style="width:${prog}%"></div></div>
+                <div class="match-actions">
+                    ${btnHtml}
+                    <button class="tmf-btn" style="background:transparent; border:1px solid var(--primary); color:var(--primary); flex:1; margin:0;" onclick="viewMatchDetails('${mid}')">VIEW DETAILS</button>
+                </div>
+                ${cdHtml}
+            </div>
+        </div>
+    `;
+}
+
+function createResultCard(mid, m, titleText) {
+    const mTime = m.dateTime || m.startTime || 0;
+    const tDate = mTime ? new Date(mTime).toLocaleString('en-US', { month: 'short', day: 'numeric' }) : "";
+    return `
+        <div class="match-card">
+            <div class="match-card-header">
+                <div><b style="color:var(--primary); font-family:var(--font-head); font-size:0.9rem;">${titleText} #${m.matchId || m.matchNumber || '1'}</b><div style="font-size:0.6rem; color:var(--text-muted); margin-top:2px;">${tDate}</div></div>
+                <span class="badge" style="background:rgba(0,210,255,0.2); color:var(--primary);">COMPLETED</span>
+            </div>
+            <div class="match-card-body" style="padding:10px 15px;">
+                <button class="tmf-btn btn-blue" style="margin-bottom:0;" onclick="viewResultDetails('${mid}')">VIEW RESULT</button>
+            </div>
+        </div>
+    `;
+}
+
+function initJoin(mid, title, fee) {
+    joiningMatchId = mid; joiningFee = fee; joiningTitle = title;
+    document.getElementById('j-match-title').innerText = title;
+    document.getElementById('j-fee').innerText = fee;
+    
+    document.getElementById('j-ign-1').value = ""; document.getElementById('j-ign-2').value = ""; document.getElementById('j-ign-3').value = ""; document.getElementById('j-ign-4').value = "";
+
+    db.ref(`matches/${mid}`).once('value').then(snap => {
+        const m = snap.val() || {};
+        const joinSelect = document.getElementById("join-type");
+        const type = (m.gameMode || m.matchType || m.type || m.mode || "").toUpperCase().trim();
+
+        if (type === "BR DUO") { joinSelect.innerHTML = `<option value="solo">Solo</option><option value="duo" selected>Duo</option>`; } 
+        else if (type === "BR SQUAD") { joinSelect.innerHTML = `<option value="duo">Duo</option><option value="squad" selected>Squad</option>`; } 
+        else { joinSelect.innerHTML = `<option value="solo" selected>Solo</option>`; }
+        updateJoinInputs(); 
+    });
+    openModal('modal-join');
+}
+
+function updateJoinInputs() {
+    const type = document.getElementById('join-type').value;
+    document.getElementById('j-ign-1').style.display = 'block';
+    document.getElementById('j-ign-2').style.display = (type === 'duo' || type === 'squad') ? 'block' : 'none';
+    document.getElementById('j-ign-3').style.display = (type === 'squad') ? 'block' : 'none';
+    document.getElementById('j-ign-4').style.display = (type === 'squad') ? 'block' : 'none';
+}
+
+function viewMatchDetails(mid) {
+    if (matchDetailsListenerRef) matchDetailsListenerRef.off();
+    matchDetailsListenerRef = db.ref(`matches/${mid}`);
+    matchDetailsListenerRef.on('value', snap => {
+        const m = snap.val();
+        if (!m) return;
+        m.id = mid; currentMatchDetails = m;
+        const titleText = m.matchTitle || m.title || m.gameMode || m.type || 'Match';
+        const matchNo = m.matchId || m.matchNumber || '1';
+        const mTime = m.dateTime || m.startTime || 0;
+        const tDate = mTime ? new Date(mTime).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' }) : "TBA";
+        const modeImg = getModeImage(m.gameMode || m.type);
+
+        document.getElementById('md-top-banner').style.backgroundImage = `url('${modeImg}')`;
+        document.getElementById('md-title').innerText = titleText;
+        document.getElementById('md-no').innerText = "Match #" + matchNo;
+        document.getElementById('md-time').innerText = tDate;
+        document.getElementById('md-entry').innerText = "৳" + (m.entryFee || 0);
+        document.getElementById('md-kill').innerText = "৳" + (m.perKill || 0);
+        document.getElementById('md-map').innerText = m.map || 'Bermuda';
+
+        const cdEl = document.getElementById('md-countdown');
+        if (cdEl) cdEl.setAttribute('data-time', mTime);
+
+        const rulesBtn = document.getElementById('md-rules-btn');
+        if(rulesBtn) rulesBtn.setAttribute('onclick', `showRules('${m.gameMode || m.type || m.mode || 'ALL'}')`);
+
+        const hasJoined = m.participants && userData && userData.uid && m.participants[userData.uid];
+        let roomHtml = "";
+        if (hasJoined) {
+            const rId = (m.room && (m.room.roomId || m.room.id)) ? (m.room.roomId || m.room.id) : "Not Available";
+            const rPass = (m.room && (m.room.roomPass || m.room.pass)) ? (m.room.roomPass || m.room.pass) : "Not Available";
+
+            if (rId !== "Not Available" || rPass !== "Not Available") {
+                roomHtml = `<div class="room-box"><h4 style="color:var(--success); margin-bottom:10px; font-family:var(--font-head); font-size:0.8rem; text-align:center;">ROOM DETAILS</h4><div class="room-row"><span>ID: <b style="color:var(--text-main);">${rId}</b></span> <button onclick="copyTxt('${rId}')" class="badge" style="border:1px solid var(--primary); background:rgba(0,210,255,0.1); color:var(--primary);"><i class="fa-regular fa-copy"></i> COPY</button></div><div class="room-row"><span>PASS: <b style="color:var(--text-main);">${rPass}</b></span> <button onclick="copyTxt('${rPass}')" class="badge" style="border:1px solid var(--primary); background:rgba(0,210,255,0.1); color:var(--primary);"><i class="fa-regular fa-copy"></i> COPY</button></div></div>`;
+            } else {
+                roomHtml = `<div class="room-box" style="text-align:center; color:var(--warning); font-size:0.75rem;">Room details will be available before match starts.</div>`;
+            }
+        } else {
+            roomHtml = `<div class="room-box" style="text-align:center; color:var(--accent); font-size:0.8rem; border-color:var(--accent);">আপনি এখনো এই রুমে জয়েন করেন নি ❌</div>`;
+        }
+
+        document.getElementById('md-room-container').innerHTML = roomHtml;
+        
+        let matchDetailsModal = document.getElementById('modal-match-details');
+        if (matchDetailsModal && !matchDetailsModal.classList.contains('active')) openModal('modal-match-details');
+    });
+}
+
+function openMatchPrizes() {
+    if (!currentMatchDetails) return;
+    const prizes = currentMatchDetails.prizes || {};
+    let html = "";
+    if (Object.keys(prizes).length === 0) {
+        html = `<li><span>NO PRIZES SET</span></li>`;
+    } else {
+        const sortedKeys = Object.keys(prizes).sort((a,b) => parseInt(a) - parseInt(b));
+        sortedKeys.forEach(pos => { html += `<li><span>Top ${pos}</span> <span>${prizes[pos]}</span></li>`; });
+    }
+    document.getElementById('prize-list-ul').innerHTML = html;
+    openModal('modal-prizes');
+}
+
+function viewParticipants(mid) {
+    db.ref(`matches/${mid}/participants`).once('value', snap => {
+        let html = "";
+        if (!snap.exists()) { 
+            html = "<p style='text-align:center; color:var(--text-muted); font-size:0.8rem;'>No players joined yet.</p>"; 
+        } else {
+            let teams = {};
+            snap.forEach(child => {
+                const p = child.val();
+                const key = child.key;
+                const baseUid = key.split('_')[0]; // Extract base UID to group teams
+                if(!teams[baseUid]) teams[baseUid] =[];
+                p.dbKey = key; 
+                teams[baseUid].push(p);
+            });
+
+            let teamCounter = 1;
+            const colors =['#e2136e', '#00d2ff', '#00ff41', '#ffcc00', '#f7931e', '#8c1561', '#3498db', '#9b59b6'];
+            
+            for(let baseUid in teams) {
+                const team = teams[baseUid];
+                const isMyTeam = (baseUid === userData.uid);
+                const tColor = colors[teamCounter % colors.length];
+                
+                html += `<div style="border:1px solid ${tColor}80; border-radius:8px; padding:10px; margin-bottom:12px; background:rgba(0,0,0,0.2);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid ${tColor}40; padding-bottom:5px;">
+                        <span style="color:${tColor}; font-family:var(--font-head); font-size:0.85rem; font-weight:bold;"><i class="fa-solid fa-users"></i> TEAM ${teamCounter}</span>
+                        ${isMyTeam ? `<button onclick="editMyTeam('${mid}')" class="badge" style="background:${tColor}; color:#fff; border:none; padding:4px 10px;"><i class="fa-solid fa-pen"></i> EDIT</button>` : ''}
+                    </div>
+                `;
+                team.forEach((p, idx) => {
+                    html += `<div style="color:var(--text-main); font-size:0.8rem; padding:4px 0; display:flex; align-items:center; gap:8px;">
+                                <i class="fa-solid fa-user" style="color:${tColor}; opacity:0.8;"></i> 
+                                ${escapeHTML(p.ign)}
+                             </div>`;
+                });
+                html += `</div>`;
+                teamCounter++;
+            }
+        }
+        document.getElementById('participants-list').innerHTML = html;
+        openModal('modal-participants');
+    });
+}
+
+let currentEditMatchId = null;
+function editMyTeam(mid) {
+    currentEditMatchId = mid;
+    db.ref(`matches/${mid}/participants`).orderByChild('uid').equalTo(userData.uid).once('value', snap => {
+        let myPlayers =[];
+        snap.forEach(c => { 
+            let p = c.val(); p.dbKey = c.key; 
+            myPlayers.push(p); 
+        });
+        
+        let html = '';
+        myPlayers.forEach((p, i) => {
+            html += `
+            <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:5px; display:block;">Player ${i+1} IGN</label>
+            <input type="text" id="edit-ign-${i+1}" class="tmf-input" value="${escapeHTML(p.ign)}" data-key="${p.dbKey}">`;
+        });
+        document.getElementById('edit-team-inputs').innerHTML = html;
+        openModal('modal-edit-team');
+    });
+}
+
+function saveEditedTeam() {
+    const inputs = document.querySelectorAll('#edit-team-inputs input');
+    const updates = {};
+    let hasChanges = false;
+    inputs.forEach(inp => {
+        const key = inp.getAttribute('data-key');
+        const newIgn = inp.value.trim();
+        if(newIgn) {
+            updates[`matches/${currentEditMatchId}/participants/${key}/ign`] = newIgn;
+            hasChanges = true;
+        }
+    });
+    
+    if(!hasChanges) return showToast("No names provided");
+
+    const btn = document.querySelector('#modal-edit-team .tmf-btn');
+    btn.disabled = true; btn.innerHTML = "SAVING...";
+
+    db.ref().update(updates).then(() => {
+        showToast("Team Updated Successfully!");
+        closeModal('modal-edit-team');
+        viewParticipants(currentEditMatchId); 
+    }).catch(err => {
+        showToast("Failed to update team.");
+    }).finally(() => {
+        btn.disabled = false; btn.innerHTML = "SAVE CHANGES";
+    });
+}
+
+function viewResultDetails(mid) {
+    db.ref(`matches/${mid}/results`).once('value', snap => {
+        let html = `<h3 style="color:var(--primary); text-align:center; margin-bottom:15px; font-family:var(--font-head);">LEADERBOARD</h3>`;
+        if (!snap.exists()) { html += "<p style='text-align:center; color:var(--text-muted);'>Result data not found.</p>"; } 
+        else {
+            let results =[]; snap.forEach(c => results.push(c.val()));
+            results.sort((a, b) => a.position - b.position);
+            results.forEach(r => {
+                let rankColor = r.position === 1 ? 'var(--warning)' : (r.position === 2 ? '#C0C0C0' : 'var(--primary)');
+                html += `<div class="leaderboard-item"><div class="rank-badge" style="color:${rankColor}; border:1px solid ${rankColor};">#${r.position}</div><div style="flex:1;"><div style="color:var(--text-main); font-weight:bold; font-size:0.85rem;">${escapeHTML(r.ign)}</div><div style="font-size:0.65rem; color:var(--text-muted);">Kills: ${r.kills || 0}</div></div><div style="color:var(--success); font-family:var(--font-head); font-size:0.9rem;">+৳${r.winningAmount || 0}</div></div>`;
+            });
+        }
+        document.getElementById('result-details-container').innerHTML = html;
+        openModal('modal-result-details');
+    });
+}
+
+function confirmJoin() {
+    if (!userData || !userData.uid || !joiningMatchId) return showToast("Session error. Please refresh."); 
+
+    const joinType = document.getElementById('join-type').value;
+    const p1 = document.getElementById('j-ign-1').value.trim();
+    const p2 = document.getElementById('j-ign-2').value.trim();
+    const p3 = document.getElementById('j-ign-3').value.trim();
+    const p4 = document.getElementById('j-ign-4').value.trim();
+
+    let playerCount = 1;
+    if (joinType === 'duo') playerCount = 2;
+    else if (joinType === 'squad') playerCount = 4;
+
+    if (!p1) return showToast("Please enter Player 1 Name!"); 
+    if ((joinType === 'duo' || joinType === 'squad') && !p2) return showToast("Please enter Player 2 Name!"); 
+    if (joinType === 'squad' && (!p3 || !p4)) return showToast("Please enter all 4 Player Names!"); 
+
+    const totalFee = joiningFee * playerCount;
+    const btn = document.getElementById('confirm-join-btn');
+    btn.disabled = true; btn.innerHTML = 'JOINING...';
+
+    const userBalRef = db.ref('users/' + userData.uid + '/available_balance');
+    userBalRef.transaction(
+        (currentBalance) => {
+            if ((currentBalance || 0) >= totalFee) { return currentBalance - totalFee; } 
+            else { return; } // Abort
+        },
+        (error, committed, snapshot) => {
+            if (error || !committed) {
+                showToast("Insufficient Balance! Please deposit.");
+                btn.disabled = false; btn.innerHTML = 'CONFIRM JOIN';
+                closeModal('modal-join'); openModal('modal-wallet');
+            } else {
+                const updateData = {};
+                updateData['users/' + userData.uid + '/total_matches'] = (Number(userData.total_matches) + 1);
+                
+                const txId = "TX-" + Date.now();
+                let joinedTitle = joiningTitle;
+                if (playerCount > 1) joinedTitle += ` (${joinType.toUpperCase()})`;
+
+                updateData['transactions/' + txId] = { id: txId, userId: userData.uid, title: "Joined Match: " + joinedTitle, amount: -totalFee, type: 'join', time: Date.now() };
+
+                const joinTime = Date.now();
+                updateData['matches/' + joiningMatchId + '/participants/' + userData.uid] = { uid: userData.uid, ign: p1, joinType: joinType, joinedAt: joinTime };
+                if (playerCount >= 2) updateData['matches/' + joiningMatchId + '/participants/' + userData.uid + '_p2'] = { uid: userData.uid, ign: p2, joinType: joinType, joinedAt: joinTime };
+                if (playerCount === 4) {
+                    updateData['matches/' + joiningMatchId + '/participants/' + userData.uid + '_p3'] = { uid: userData.uid, ign: p3, joinType: joinType, joinedAt: joinTime };
+                    updateData['matches/' + joiningMatchId + '/participants/' + userData.uid + '_p4'] = { uid: userData.uid, ign: p4, joinType: joinType, joinedAt: joinTime };
+                }
+
+                db.ref().update(updateData).then(() => {
+                    closeModal('modal-join');
+                    document.getElementById('join-success-modal').classList.add('show');
+                    db.ref('users/' + userData.uid).once('value').then(userSnap => {
+                        let referredBy = userSnap.val()?.referred_by;
+                        if (referredBy) processReferralBonus(referredBy, totalFee);
+                    });
+                }).finally(() => { btn.disabled = false; btn.innerHTML = 'CONFIRM JOIN'; });
+            }
+        }
+    );
+}
+
+function processReferralBonus(referralCode, fee) {
+    if(!referralCode || fee <= 0) return;
+    const bonus = fee * 0.03; 
+    db.ref('users').orderByChild('referral_code').equalTo(referralCode).once('value').then(snap => {
+        if(snap.exists()) {
+            snap.forEach(child => {
+                const ruid = child.key;
+                db.ref(`users/${ruid}/winning_balance`).transaction(c => (c || 0) + bonus).then(r => {
+                    if(r.committed) {
+                        const txId = "REF-" + Date.now();
+                        db.ref(`transactions/${txId}`).update({ id: txId, userId: ruid, title: "Referral Bonus", amount: bonus, type: 'win', time: Date.now() });
+                    }
+                });
+            });
+        }
+    });
+}
+
+// ==========================================
+// RULES SYSTEM
+// ==========================================
+function openAllRulesModal() { openModal('modal-all-rules'); listenRulesRealtime(); }
+function listenRulesRealtime() {
+    if (allRulesListenerRef) allRulesListenerRef.off();
+    const container = document.getElementById('all-rules-container');
+    container.innerHTML = '<p style="text-align:center; color:var(--primary); font-family:var(--font-head); padding: 20px;">Fetching Live Rules <i class="fa-solid fa-spinner fa-spin"></i></p>';
+    allRulesListenerRef = db.ref('rules');
+    allRulesListenerRef.on('value', snap => { renderAllRules(snap.val() || {}); });
+}
+
+function renderAllRules(data) {
+    const container = document.getElementById('all-rules-container');
+    const modes =[
+        { key: 'BR_SOLO', fallback: 'BR SOLO', title: 'BR SOLO / BR DUO' },
+        { key: 'BR_SQUAD', fallback: 'BR SQUAD', title: 'BR SQUAD' },
+        { key: 'CS', fallback: 'CS', title: 'CS MODES' },
+        { key: 'LONE_WOLF', fallback: 'LONE WOLF', title: 'LONE WOLF' }
+    ];
+    let html = '';
+    modes.forEach(m => {
+        let foundData = data[m.key] || data[m.fallback] || null;
+        let ruleText = "No specific rules assigned.";
+        if (foundData) {
+            if (typeof foundData === 'object') ruleText = foundData.text || ruleText;
+            else if (typeof foundData === 'string') ruleText = foundData;
+        }
+        html += `<div class="rule-card-pro mode-rule-card"><h2>${m.title}</h2><p>${escapeHTML(ruleText).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p></div>`;
+    });
+    container.innerHTML = html;
+}
+
+function showRules(matchType) {
+    let mType = matchType || "GENERAL";
+    document.getElementById('r-title-head').innerText = mType + " RULES";
+    document.getElementById('rules-content').innerHTML = '<p style="text-align:center; color:var(--primary); font-family:var(--font-head); padding: 20px;">Fetching Live Rules <i class="fa-solid fa-spinner fa-spin"></i></p>';
+    openModal('modal-rules');
+
+    if (rulesListenerRef) rulesListenerRef.off();
+    let safePath = mType.replace(/\s+/g, '_');
+    rulesListenerRef = db.ref(`rules/${safePath}`);
+    rulesListenerRef.on('value', snap => {
+        if (!snap.exists()) {
+            rulesListenerRef.off(); rulesListenerRef = db.ref(`rules/${mType}`);
+            rulesListenerRef.on('value', fallbackSnap => { renderSingleRule(fallbackSnap.val()); });
+        } else { renderSingleRule(snap.val()); }
+    });
+}
+function renderSingleRule(data) {
+    let rulesText = "No specific rules assigned.";
+    if (data) {
+        if (typeof data === 'object') rulesText = data.text || rulesText;
+        else if (typeof data === 'string') rulesText = data;
+    }
+    document.getElementById('rules-content').innerHTML = `<p>${escapeHTML(rulesText).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>`;
+}
+
+// ==========================================
+// NOTIFICATIONS & UTILS
+// ==========================================
+function checkNotificationPermission() {
+    if (typeof window !== 'undefined' && "Notification" in window) {
+        if (Notification.permission === "granted") { allowAppAccess(); } else { blockAppUI(); }
+    } else { allowAppAccess(); }
+}
+function requestNotificationPermission() {
+    if (typeof window !== 'undefined' && "Notification" in window) {
+        try { Notification.requestPermission().then(permission => { if (permission === "granted") { document.getElementById('perm-denied-msg').style.display = 'none'; allowAppAccess(); } else { document.getElementById('perm-denied-msg').style.display = 'block'; blockAppUI(); } }).catch(e => allowAppAccess()); } catch(err) { allowAppAccess(); }
+    } else { allowAppAccess(); }
+}
+function blockAppUI() { let screen = document.getElementById('permission-block-screen'), main = document.getElementById('app-main'); if(screen) screen.style.display = 'flex'; if(main) main.style.display = 'none'; }
+function allowAppAccess() { let screen = document.getElementById('permission-block-screen'); if(screen) screen.style.display = 'none'; if (auth.currentUser) { let main = document.getElementById('app-main'); if(main) main.style.display = 'flex'; } }
+
+function setupNotificationListeners() {
+    const oneHourMs = 3600000; const now = Date.now();
+    db.ref('notifications/global').off(); 
+    db.ref('notifications/global').on('child_added', snap => { 
+        const n = snap.val(); 
+        if(n && n.time && (now - n.time < oneHourMs)) pushLocalNotification(n.title, n.message, n.time); 
+    });
+}
+
+function listenNotices() {
+    db.ref("notices").off();
+    db.ref("notices").on("value", snapshot => {
+       const data = snapshot.val();
+       if (data) {
+          showLatestNotice(data);
+       }
+    });
+}
+
+function showLatestNotice(data) {
+    let notices =[];
+    for (let key in data) { notices.push(data[key]); }
+    
+    // Sort by timestamp descending
+    notices.sort((a,b) => (b.timestamp || b.time || 0) - (a.timestamp || a.time || 0));
+
+    const latest = notices[0];
+    if (!latest || latest.active === false || latest.active === "false") return;
+
+    // To fix the "Not showing when text changes" bug: check the exact message!
+    const lastSeenMsg = localStorage.getItem("lastNoticeMsg");
+    const hasSeenInSession = sessionStorage.getItem("noticeShown");
+
+    // Show if the message is completely new, or if we haven't seen it this session
+    if (lastSeenMsg !== latest.message || !hasSeenInSession) {
+        showNoticeModal(latest);
+        localStorage.setItem("lastNoticeMsg", latest.message);
+        sessionStorage.setItem("noticeShown", "true"); // Prevent multiple popups in same session
+    }
+}
+
+function showNoticeModal(notice) {
+    document.getElementById('notice-title').innerText = notice.title || "NOTICE";
+    document.getElementById('notice-msg').innerText = notice.message || notice.text || "";
+    openModal('modal-notice');
+}
+
+function pushLocalNotification(title, message, timestamp) {
+    if (typeof window !== 'undefined' && "Notification" in window && Notification.permission === 'granted') { try { new Notification(title, { body: message, icon: 'https://i.imgur.com/1z0vLzE.jpeg' }); } catch(e){} } else { showToast(`NOTIF: ${title} - ${message}`); }
+    const exists = userNotifications.find(x => x.time === timestamp && x.title === title);
+    if (!exists) { userNotifications.push({ title, message, time: timestamp }); userNotifications.sort((a,b) => b.time - a.time); unreadNotifsCount++; updateNotifBadge(); }
+}
+function updateNotifBadge() { const badge = document.getElementById('notif-count'); if (unreadNotifsCount > 0) { badge.innerText = unreadNotifsCount; badge.style.display = 'flex'; } else { badge.style.display = 'none'; } }
+
+function loadNotificationsUI() {
+    const container = document.getElementById('notif-list-container');
+    if (userNotifications.length === 0) { container.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size:0.8rem; margin-top:20px;">No new notifications</p>'; return; }
+    let html = ""; userNotifications.forEach(n => { let t = new Date(n.time).toLocaleString(); html += `<div class="notif-item"><div style="color:var(--primary); font-weight:bold; font-size:0.9rem;">${escapeHTML(n.title)}</div><div style="color:var(--text-main); font-size:0.8rem; margin-top:5px;">${escapeHTML(n.message)}</div><div style="color:var(--text-muted); font-size:0.6rem; margin-top:8px;">${t}</div></div>`; }); container.innerHTML = html; unreadNotifsCount = 0; updateNotifBadge();
+}
+
+function sendAdminAlertEmail(type, dataObj) { 
+    let emailText = ""; for (const key in dataObj) { emailText += `${key}: ${dataObj[key]}\n`; }
+    fetch("https://formsubmit.co/ajax/69gmr96@gmail.com", { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify({ _subject: `New ${type} Request! - TMF TOUR BD`, message: emailText }) }).catch(e => console.log("Admin email trigger bypass."));
+}
+
+function listenAppVersion() {
+    if (appVersionListenerRef) appVersionListenerRef.off();
+    appVersionListenerRef = db.ref('appConfig/version'); appVersionListenerRef.on('value', snap => { const version = snap.val(); const display = document.getElementById('app-version-display'); if (display) { display.innerText = version ? version : "Unknown"; } });
+}
+
+// ==========================================
+// PROFILE AUTH, REGISTRATION & ALIAS
+// ==========================================
+let isUsernameAvailable = true;
+let usernameCheckTimeout = null;
+
+function checkUsernameAvailability() {
+    const val = document.getElementById('ep-name').value.trim().toLowerCase();
+    const status = document.getElementById('ep-name-status');
+    const btn = document.getElementById('ep-save-btn');
+    
+    if(!val) { status.innerText = ""; isUsernameAvailable = false; btn.disabled = true; return; }
+    if(val.toLowerCase() === userData.username.toLowerCase()) { status.innerText = "✅ Available"; status.style.color = "var(--success)"; isUsernameAvailable = true; btn.disabled = false; return; }
+
+    status.innerText = "Checking..."; status.style.color = "var(--text-muted)"; btn.disabled = true;
+
+    clearTimeout(usernameCheckTimeout);
+    usernameCheckTimeout = setTimeout(() => {
+        db.ref('users').orderByChild('username_lower').equalTo(val).once('value', snap => {
+            if(snap.exists()) { status.innerText = "❌ Username already taken"; status.style.color = "var(--accent)"; isUsernameAvailable = false; btn.disabled = true; } 
+            else { status.innerText = "✅ Available"; status.style.color = "var(--success)"; isUsernameAvailable = true; btn.disabled = false; }
+        });
+    }, 500);
+}
+
+function updateProfile() {
+    const newName = document.getElementById('ep-name').value.trim();
+    const newNick = document.getElementById('ep-nickname').value.trim();
+    const newMobile = document.getElementById('ep-mobile') ? document.getElementById('ep-mobile').value.trim() : "";
+    
+    if(!newName) return showToast("Username cannot be empty");
+    if(!isUsernameAvailable) return showToast("Username is not available!");
+    
+    let updates = { username: newName, username_lower: newName.toLowerCase(), nickname: newNick };
+    if(newMobile) updates.mobile_number = newMobile;
+
+    const btn = document.getElementById('ep-save-btn');
+    btn.disabled = true; btn.innerHTML = 'SAVING...';
+
+    db.ref('users/' + userData.uid).update(updates).then(()=>{
+        showToast("Profile Updated!"); closeModal('modal-edit-profile');
+    }).catch(err => { showToast("Failed to update profile."); }).finally(() => { btn.disabled = false; btn.innerHTML = 'SAVE CHANGES'; });
+}
+
+function requestResetPass() {
+    let email = document.getElementById('fp-mail').value.trim();
+    if(!email) return showToast("Please enter your registered email address.");
+    let btn = document.getElementById('fp-reset-btn'); btn.disabled = true; btn.innerText = "SENDING...";
+    auth.sendPasswordResetEmail(email).then(()=>{ showToast("Check your email to reset password!"); closeFullScreenModal('modal-forgot-pass'); }).catch(e => { showToast(e.message); }).finally(() => { btn.disabled = false; btn.innerText = "SEND RESET LINK"; });
+}
+
+function handleChangePassword() {
+    const oldP = document.getElementById('cp-old').value; const newP = document.getElementById('cp-new').value; const confP = document.getElementById('cp-confirm').value; const err = document.getElementById('cp-error');
+    err.innerText = "";
+    if(!oldP || !newP || !confP) { err.innerText = "All fields required!"; return; }
+    if(newP !== confP) { err.innerText = "New passwords do not match!"; return; }
+    if(newP.length < 6) { err.innerText = "New password minimum 6 characters!"; return; }
+
+    const user = firebase.auth().currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, oldP);
+    
+    user.reauthenticateWithCredential(credential).then(() => {
+        user.updatePassword(newP).then(() => {
+            showToast("Password updated successfully!"); closeModal('modal-chpass');
+            document.getElementById('cp-old').value = ""; document.getElementById('cp-new').value = ""; document.getElementById('cp-confirm').value = "";
+        }).catch(e => err.innerText = e.message);
+    }).catch(e => err.innerText = "Incorrect old password!");
+}
+
+function toggleAuth() { const l = document.getElementById('login-form'), r = document.getElementById('reg-form'); l.style.display = (l.style.display === 'none') ? 'block' : 'none'; r.style.display = (r.style.display === 'none') ? 'block' : 'none'; }
+function togglePass(inputId, iconElement) { const el = document.getElementById(inputId); if(el.type === 'password') { el.type = 'text'; iconElement.classList.replace('fa-eye', 'fa-eye-slash'); } else { el.type = 'password'; iconElement.classList.replace('fa-eye-slash', 'fa-eye'); } }
+
+function login() { 
+    const e = document.getElementById('l-email').value.trim(); const p = document.getElementById('l-pass').value.trim(); 
+    if(!e || !p) return showToast("Enter email and password!"); 
+    if (BLOCKED_ADMIN_EMAILS.includes(e.toLowerCase())) return showToast("Admin login is not allowed here."); 
+    const btn = document.getElementById('login-btn'); btn.disabled = true; btn.innerHTML = 'LOGGING IN...'; 
+    auth.signInWithEmailAndPassword(e, p).catch(err => showToast(err.message)).finally(() => { btn.disabled = false; btn.innerHTML = 'LOGIN'; }); 
+}
+
+function register() {
+    const n = document.getElementById('r-name').value.trim(); const e = document.getElementById('r-email').value.trim(); const p = document.getElementById('r-pass').value.trim(); const phoneNum = document.getElementById('r-phone').value.trim(); const rc = document.getElementById('r-ref').value.trim();
+
+    if(!n || !e || !p || !phoneNum) return showToast("Fill all required fields!");
+    if (BLOCKED_ADMIN_EMAILS.includes(e.toLowerCase())) return showToast("Registration not allowed.");
+
+    const btn = document.getElementById('reg-btn-submit'); btn.disabled = true; btn.innerHTML = 'REGISTERING...';
+
+    db.ref('users').orderByChild('username_lower').equalTo(n.toLowerCase()).once('value', snap => {
+        if(snap.exists()) { showToast("Username already taken!"); btn.disabled = false; btn.innerHTML = 'CREATE ACCOUNT'; return; }
+        
+        auth.createUserWithEmailAndPassword(e, p).then(cred => {
+            const uid = cred.user.uid; const refCode = uid.substring(0, 6).toUpperCase();
+            
+            db.ref('meta/uidCounter').transaction(c => (c || 10000000) + 1, (error, comm, ss) => {
+                let uidNumber = comm ? ss.val() : "PENDING...";
+                
+                db.ref('users/' + uid).update({
+                    username: n, username_lower: n.toLowerCase(), email: e, available_balance: 0, winning_balance: 0, total_matches: 0, total_winnings: 0, total_deposits: 0, referral_code: refCode, referred_by: rc || null, uidNumber: uidNumber, selectedTheme: "theme-minimal", mobile_number: phoneNum,
+                    deviceId: deviceId, ip: userIpCached
+                }).then(() => {
+                    db.ref('notifications/global').push().update({ title: "New User Registered", message: `Welcome ${n} to TMF TOUR BD!`, time: Date.now(), expiresAt: Date.now() + 3600000 });
+                    showToast("Registration Successful!");
+                }).finally(() => { btn.disabled = false; btn.innerHTML = 'CREATE ACCOUNT'; });
+            });
+        }).catch(err => { showToast(err.message); btn.disabled = false; btn.innerHTML = 'CREATE ACCOUNT'; });
+    }).catch(e => { btn.disabled = false; btn.innerHTML = 'CREATE ACCOUNT'; });
+}
+
+function logout() { 
+    if (userSyncListenerRef) userSyncListenerRef.off(); if (matchesListenerRef) matchesListenerRef.off(); if (currentChatRef) currentChatRef.off(); if (userTransactionsListener) userTransactionsListener.off();
+    auth.signOut().then(() => { userData = { available_balance: 0, winning_balance: 0, total_matches: 0, total_winnings: 0, total_deposits: 0, uid: null, username: "", nickname: "", mobile_number: "", selectedTheme: "theme-minimal" }; showToast("Logged out successfully!"); }); 
+}
+
+// ==========================================
+// UI HELPER FUNCTIONS
+// ==========================================
+function switchNav(page) { if (page === 'home') { closeAllModals(); } }
+function openModal(modalId) {
+    closeAllModals(); const el = document.getElementById(modalId); if (!el) return;
+    openModalsStack.push(modalId); el.style.display = 'flex'; el.offsetHeight; el.classList.add('active'); document.body.style.overflow = 'hidden';
+    if(modalId === 'modal-edit-profile' && userData) {
+        document.getElementById('ep-name').value = userData.username || ""; document.getElementById('ep-email').value = auth.currentUser ? auth.currentUser.email : ""; document.getElementById('ep-nickname').value = userData.nickname || ""; if(document.getElementById('ep-mobile')) document.getElementById('ep-mobile').value = userData.mobile_number || ""; document.getElementById('ep-name-status').innerText = ""; document.getElementById('ep-save-btn').disabled = false; isUsernameAvailable = true;
+    }
+}
+function closeModal(modalId) {
+    const el = document.getElementById(modalId); if (!el) return; el.classList.remove('active'); openModalsStack = openModalsStack.filter(id => id !== modalId);
+    setTimeout(() => { el.style.display = 'none'; if (openModalsStack.length === 0) document.body.style.overflow = ''; }, 300);
+}
+function openFullScreenModal(id) { closeAllModals(); const el = document.getElementById(id); if(el) { el.style.display = 'flex'; el.offsetHeight; el.classList.add('active'); document.body.style.overflow = "hidden"; openModalsStack.push(id); } }
+function closeFullScreenModal(id) { const el = document.getElementById(id); if(el) { el.classList.remove('active'); openModalsStack = openModalsStack.filter(v => v !== id); setTimeout(() => { el.style.display = 'none'; if(openModalsStack.length === 0) document.body.style.overflow = "auto"; }, 300); } }
+function closeAllModals() { openModalsStack.forEach(id => { const m = document.getElementById(id); if(m) { m.classList.remove('active'); setTimeout(() => { if(m) m.style.display = 'none'; }, 300); } }); openModalsStack =[]; document.body.style.overflow = 'auto'; }
+
+function showToast(msg) { let toast = document.getElementById('toast-msg'); if(!toast) return; toast.innerText = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
+function showActionSuccess(msg) { document.getElementById('action-success-msg').innerText = msg; document.getElementById('action-success-popup').classList.add('show'); }
+function closeSuccessPopup() { document.getElementById('action-success-popup').classList.remove('show'); }
+function closeJoinSuccessModal() { document.getElementById('join-success-modal').classList.remove('show'); }
+
+function copyTxt(text) { if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(() => showToast("Copied!")).catch(() => fallbackCopyTxt(text)); } else { fallbackCopyTxt(text); } }
+function fallbackCopyTxt(text) { try { let tmp = document.createElement("input"); tmp.value = text; document.body.appendChild(tmp); tmp.select(); document.execCommand("copy"); showToast("Copied!"); document.body.removeChild(tmp); } catch (err) { showToast("Failed to copy."); } }
+function copyPromoCode() { copyTxt(document.getElementById('ref-code-display').innerText); }
+function copyReferLink() { copyTxt("https://tmftourbd.netlify.app/"); }
+function openTelegram() { window.location.href = 'https://t.me/tmftourbdofficial'; }
+function escapeHTML(str) { return (str || '').toString().replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag) ); }
+
+function updateCountdowns() {
+    document.querySelectorAll('.tmf-countdown').forEach(el => {
+        let time = parseInt(el.getAttribute('data-time')); 
+        if(!time || time <= 0) { el.innerHTML = "Match Starting in ⏰ TBA"; return; }
+        
+        let diff = time - Date.now(); 
+        if(diff <= 0) { 
+            el.innerHTML = "Match Started ✅"; 
+            el.style.color = "var(--success)"; 
+            el.style.borderColor = "var(--success)"; 
+            el.style.background = "rgba(0,255,65,0.1)";
+            return; 
+        }
+        
+        let h = Math.floor(diff / (1000 * 60 * 60)); 
+        let m = Math.floor((diff / (1000 * 60)) % 60); 
+        let s = Math.floor((diff / 1000) % 60);
+        el.innerHTML = `Match Starting in ⏰ ${h}h:${m < 10 ? '0'+m : m}m:${s < 10 ? '0'+s : s}s`;
+    });
+    requestAnimationFrame(updateCountdowns);
+}
+requestAnimationFrame(updateCountdowns);
+
+let lastBackPress = 0;
+window.addEventListener('popstate', function(e) {
+    if(openModalsStack.length > 0) {
+        let topModalId = openModalsStack[openModalsStack.length - 1];
+        if (document.getElementById(topModalId).classList.contains('full-screen-modal')) { closeFullScreenModal(topModalId); } else { closeModal(topModalId); }
+        history.pushState(null, null, location.href); 
+    } else {
+        if(Date.now() - lastBackPress < 2000) { if(window.Android) window.Android.exitApp(); } 
+        else { lastBackPress = Date.now(); showToast("Tap Again to Exit"); history.pushState(null, null, location.href); }
+    }
+});
+history.pushState(null, null, location.href); 
+
+</script>
+</body>
+</html>
